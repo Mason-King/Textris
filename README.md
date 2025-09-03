@@ -16,4 +16,4 @@ Word Tetris combines the fast-paced action of falling blocks with the brain-teas
 
 🏆 Compete & Climb: Chase high scores, unlock achievements, and challenge friends.
 
-Easy to pick up, hard to master — every drop matters. Can you keep the board clear and climb to word mastery?****
+Easy to pick up, hard to master — every drop matters. Can you keep the board clear and climb to word mastery?
