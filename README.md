@@ -1,7 +1,7 @@
 CS 321-2
 Team Three: Jason Watts, Carrie Rochell, Cruz Shafer, Mason King
 
-# 🧩 Word Tetris (Working Title)  
+# 🧩 Textris
 
 **Stack letters. Build words. Clear the board.**  
 
