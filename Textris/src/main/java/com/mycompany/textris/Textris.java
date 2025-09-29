@@ -6,7 +6,7 @@ package com.mycompany.textris;
 
 /**
  *
- * @author HP
+ * @author 
  */
 public class Textris {
 
