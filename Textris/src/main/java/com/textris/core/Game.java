@@ -10,23 +10,21 @@ public class Game {
     public void start() {
         System.out.println("Starting textris game...");
         // TODO: Implement game loop
-        //String[] e = {};
+        
+        String[] words = null;
+        
         try {
-            String[] words = makeWordList();
+            words = makeWordList();
             
-            for (String str : words) {
-            System.out.println(str);
-            }
+            System.out.println("Word list loaded.");
         } catch (IOException e){
             System.out.println("Word list could not be read. Aborting...\n");
         }
         
     }
     
-    private String[] makeWordList() throws IOException,java.io.FileNotFoundException {
+    private static String[] makeWordList() throws IOException,java.io.FileNotFoundException {
         List wordList = new ArrayList<String>();
-        
-        //BufferedReader bf = new BufferedReader(new FileReader("/com/textris/core/Twordlist_curated.txt"));
         
         InputStream input = Game.class.getResourceAsStream("/Twordlist_curated.txt");
         BufferedReader bf = new BufferedReader(new java.io.InputStreamReader(input));
