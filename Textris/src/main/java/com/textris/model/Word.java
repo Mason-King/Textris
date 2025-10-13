@@ -1,3 +1,5 @@
+package com.textris.model;
+
 /**
  * This class represents a word that is being formed.
  *

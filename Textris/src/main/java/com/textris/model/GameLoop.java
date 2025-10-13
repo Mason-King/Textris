@@ -1,3 +1,8 @@
+package com.textris.model;
+
+
+
+
 /**
  * Game loop entry point
  *
@@ -9,11 +14,19 @@
  * - Game Board
  */
 
-package com.textris.core;
-
-public class Game {
+public class GameLoop {
+    
     public void start() {
         System.out.println("Starting textris game...");
         // TODO: Implement game loop
     }
+
+    public dropBlock() {
+
+    }
+
+    public spawnBlock() {
+        
+    }
+
 }

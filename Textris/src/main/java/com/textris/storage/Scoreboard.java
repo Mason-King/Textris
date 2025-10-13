@@ -1,3 +1,5 @@
+package model.components;
+
 /**
  * This class stores and manages the high scores of all game players
  *
