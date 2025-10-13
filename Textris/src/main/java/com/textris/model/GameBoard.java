@@ -25,7 +25,7 @@ public class GameBoard {
     private final int height;
 
     // Create a 2D arraylist to store the grid in
-    List<List<GameCell>> grid = new ArrayList<>();
+    private List<List<GameCell>> grid = new ArrayList<>();
 
      /**
      * Creates an empty GameBoard by interconnecting GameCells
