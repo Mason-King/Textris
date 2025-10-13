@@ -33,9 +33,9 @@ public class LetterBlock {
     /**
      * Allows classes to access a copy of the held letter but not change it.
      *
-     * @return string copy of letter
+     * @return char copy of letter
      */
-    public String GetLetter() {
+    public char GetLetter() {
         // TODO return a copy of letter
     }
 }

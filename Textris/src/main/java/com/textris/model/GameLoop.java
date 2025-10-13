@@ -1,10 +1,10 @@
 package com.textris.model;
 
-
-
+import model.GameBoard;
+import model.Dictionary;
 
 /**
- * Game loop entry point
+ * Handles the state of the game
  *
  * Responsibilities:
  * - Controls main game loop
@@ -15,12 +15,23 @@ package com.textris.model;
  */
 
 public class GameLoop {
-    
-    public void start() {
-        System.out.println("Starting textris game...");
-        // TODO: Implement game loop
-    }
 
+    // Create a new gameboard of the correct size
+    private GameBoard board;
+    private Dictionary dictionary;
+    private LetterBlock current;
+    private int score;
+
+    /**
+     * Creates and manages the different aspects of the game in relation to one another
+     *
+     * @param board the actual grid of cells
+     * @param dictionary the instance of the dictionary
+     */
+    public GameLoop(GameBoard board, Dictionary dictionary) {
+        // TODO: initialize fields
+    }
+    
     public dropBlock() {
 
     }

@@ -17,7 +17,7 @@ import model.LetterBlock;
 public class GameCell {
     
     // The block that is hold in the cell
-    private LetterBlock main;
+    private LetterBlock block;
 
     // The cells neighboring the main cell
     // Add diagonals if needed
@@ -32,8 +32,17 @@ public class GameCell {
      *
      * @param main the initial LetterBlock stored (usually null?)
      */
-    public GameCell(LetterBlock main) {
+    public GameCell(LetterBlock block) {
         // TODO: allow instantiation to null LetterBlock
+    }
+
+    /**
+     * Allows changing of held LetterBlock
+     *
+     * @param newBlock new block to put in
+     */
+    public void setBlock(LetterBlock newBlock) {
+        // TODO: set LetterBlock block to the newBlock
     }
 
     /**
@@ -43,6 +52,13 @@ public class GameCell {
      */
     public LetterBlock getBlock() {
         // TODO: return copy of letterblock main
+    }
+
+    /**
+     * Clears the letterblock from the gamecell, leaving it empty
+     */
+    public void clear() {
+        // TODO: clear letterblock from gamecell
     }
 
     /**
@@ -128,5 +144,8 @@ public class GameCell {
     public void setDown(GameCell newDown) {
         // TODO: check input, assign to GameCell down 
     }
+
+    // should we add direct methods for shifting the block in the current cell
+    // to the left, right, and down?
 
 }
