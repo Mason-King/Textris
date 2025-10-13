@@ -12,6 +12,7 @@ import model.Dictionary;
  *
  * Collaborators:
  * - Game Board
+ * - Dictionary
  */
 
 public class GameLoop {
@@ -32,12 +33,54 @@ public class GameLoop {
         // TODO: initialize fields
     }
     
-    public dropBlock() {
-
+    /**
+     * Starts dropping the current block from the top left
+     */
+    public void dropBlock() {
+        // TODO: implement block-dropping logic
     }
 
-    public spawnBlock() {
-        
+    /**
+     * Sets a block in place once it reaches the bottom 
+     * of the grid or another block
+     */
+    public void setBlock() {
+        // TODO: leave block in place, check grid for words
     }
 
+    /**
+     * Allows the rest of the blocks to fall to the bottom after deleting some
+     */
+    public void fallingBlocks() {
+        // TODO: allow all blocks already on board to fall down
+        // so that they rest at the bottom (or on top of another block)
+    }
+
+    /**
+     * Collects strings containing the recently added block
+     * and searches for words in them
+     */
+    public void findWords() {
+        // TODO: use GameBoard.detectWords() and Dictionary.isValid() to find words
+        // in the grid; use GameCell.clear() to delete, drop remaining blocks
+        // and call addToScore(word.length) if found
+    }
+
+    /**
+     * Accessor for score field
+     *
+     * @return copy of score variable
+     */
+    public int getScore() {
+        // TODO: return copy of score
+    }
+
+    /**
+     * Adds a value to the current score
+     *
+     * @param bonus as the addition to the score
+     */
+    public void addToScore(int bonus) {
+        // TODO: add bonus to score
+    }
 }

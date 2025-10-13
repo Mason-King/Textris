@@ -145,7 +145,29 @@ public class GameCell {
         // TODO: check input, assign to GameCell down 
     }
 
-    // should we add direct methods for shifting the block in the current cell
-    // to the left, right, and down?
+
+    /**
+     * Moves the current LetterBlock left
+     */
+    public void moveLeft() {
+        // TODO: if there's nothing in GameCell.left,
+        // move LetterBlock block there
+    }
+
+    /**
+     * Moves the current LetterBlock right
+     */
+    public void moveRight() {
+        // TODO: if there's nothing in GameCell.right,
+        // move LetterBlock block there
+    }
+
+    /**
+     * Moves the current LetterBlock down
+     */
+    public void moveDown() {
+        // TODO: if there's nothing in GameCell.down,
+        // move LetterBlock block there
+    }
 
 }

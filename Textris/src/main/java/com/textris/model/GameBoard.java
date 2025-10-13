@@ -56,6 +56,4 @@ public class GameBoard {
     public void placeBlock(LetterBlock block) {
         // TODO: spawn block in upper leftmost gamecell
     }
-
-    // add functions for canmove left, right, down
 }
