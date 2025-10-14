@@ -1,4 +1,4 @@
-package storage;
+package com.textris.storage;
 
 /**
  * This class contains a reference to a file that holds the

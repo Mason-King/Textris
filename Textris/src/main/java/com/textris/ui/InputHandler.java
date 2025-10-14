@@ -1,3 +1,5 @@
+package com.textris.ui;
+
 /**
  * This class handles the users input
  *

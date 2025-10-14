@@ -1,4 +1,4 @@
-package model.components;
+package com.textris.storage;
 
 /**
  * This class stores and manages the high scores of all game players
