@@ -1,6 +1,7 @@
 package com.textris;
 
 import com.textris.ui.GameWindow;
+import com.textris.model.Dictionary;
 
 import javax.swing.*;
 
@@ -12,7 +13,9 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             new GameWindow().setVisible(true);
         });
-
+        
+        Dictionary dictionary = new Dictionary();
+        
         System.out.println("Exiting textris game.");
     }
 }

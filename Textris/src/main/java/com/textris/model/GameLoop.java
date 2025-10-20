@@ -1,8 +1,5 @@
 package com.textris.model;
 
-import model.GameBoard;
-import model.Dictionary;
-
 /**
  * Handles the state of the game
  *

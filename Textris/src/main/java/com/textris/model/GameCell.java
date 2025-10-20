@@ -1,6 +1,6 @@
 package com.textris.model;
 
-import model.LetterBlock;
+import com.textris.model.LetterBlock;
 
 /**
  * This class represents a cell in the GameBoard that holds a

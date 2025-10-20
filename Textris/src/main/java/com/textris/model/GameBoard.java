@@ -1,6 +1,6 @@
 package com.textris.model;
 
-import model.GameCell;
+import com.textris.model.GameCell;
 import java.util.ArrayList;
 import java.util.List;
 

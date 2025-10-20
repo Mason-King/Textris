@@ -1,15 +1,15 @@
 package com.textris.model;
 
-import storage.LoadDictionary;
+import com.textris.storage.LoadDictionary;
 
 /**
- * This class uses a txt file of words to check if a word has
+ * This class uses a text file of words to check if a word has
  * formed on the grid.
  *
  * Responsibilities:
  * - References Word dictionary
  * - On block dropped, checks grid for new words
- * - Determines the point value for wordsd
+ * - Determines the point value for words
  *
  * Collaborators:
  * - LoadDictionary
@@ -17,19 +17,29 @@ import storage.LoadDictionary;
  */
 public class Dictionary {
 
-    /**
-     * Instantiates the dictionary reader (using LoadDictionary)
-     */
+    private final LoadDictionary dictionary;
+
     public Dictionary() {
-        // TODO: stuff
+        this.dictionary = new LoadDictionary();
+
+        try{
+            dictionary.load();
+        }
+        catch(java.io.IOException e){
+            System.out.println("Dictionary failed to import.");
+        }
     }
 
-    /**
+/**
+     * Instantiates the dictionary reader (using LoadDictionary)
+     */
+        /**
      * Checks if a string is a valid word
      *
      * @param str string to check
+     * @return 
      */
     public boolean isValid(String str) {
-        // TODO: use reference to LoadDictionary to check if a string is a word
+        return dictionary.findWord(str);
     }
 }
