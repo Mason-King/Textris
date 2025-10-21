@@ -1,7 +1,3 @@
-package com.textris.model;
-
-import storage.LetterWeights;
-
 /**
  * This class represents a block containing a letter.
  *
@@ -12,10 +8,12 @@ import storage.LetterWeights;
  * - LetterWeights
  *
  */
+package com.textris.model;
+
+import storage.LetterWeights;
+import java.util.Random;
+
 public class LetterBlock {
-    
-    // Chooses a letter based on LetterWeights
-    // Holds the letter
 
     private final char letter;
 
@@ -27,7 +25,9 @@ public class LetterBlock {
      * Generates a letter based on the weights of letters. Only called on construction.
      */
     private void GenerateLetter() {
-        // TODO assign a letter based on weights in storage.LetterWeights
+        Random generator = new Random();
+
+        int randomInt = generator.nextInt(LetterWeights.upperBound);
     }
 
     /**
