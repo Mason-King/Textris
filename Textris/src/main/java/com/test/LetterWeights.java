@@ -9,7 +9,8 @@
  *
  */
 
-package com.textris.storage;
+// package com.textris.storage;
+package test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class LetterWeights 
 {
     // file of cumulative weighted regions from 0 to 9999
-    private static final String fileName = "weightsCumulative.txt";
+    private static final String fileName = "test\\weightsCumulative.txt";
 
     private static TreeMap<Integer, Character> weights = new TreeMap<>();
 

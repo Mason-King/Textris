@@ -9,9 +9,10 @@
  *
  */
 
-package com.textris.model;
+// package com.textris.model;
+package test;
 
-import com.textris.storage.LetterWeights;
+import test.LetterWeights;
 import java.util.Random;
 
 public class LetterBlock 
@@ -37,5 +38,17 @@ public class LetterBlock
      */
     public char getLetter() {
         return letter;
+    }
+
+
+
+    public static void main(String[] args) {
+        LetterBlock all;
+        for (int i = 0; i < 100; i++)
+        {
+            all = new LetterBlock();
+            System.out.println(all.getLetter() + "\n"); 
+        }
+
     }
 }
