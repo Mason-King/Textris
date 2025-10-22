@@ -28,6 +28,7 @@ public class GameLoop {
      */
     public GameLoop(GameBoard board, Dictionary dictionary) {
         // TODO: initialize fields
+        dictionary = new Dictionary();
     }
     
     /**

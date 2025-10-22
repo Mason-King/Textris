@@ -16,8 +16,6 @@ import java.util.Arrays;
  * 
  * @author Jason Watts
  */
-
-
 public class LoadDictionary {
     private static String[] words = null;
     private static int listSize = 0;
