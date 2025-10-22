@@ -15,7 +15,7 @@ public class LetterWeights {
     // Contains methods to allow other classes to retrieve the weight of a specific letter
 
     // Name of file
-    private static final String fileName;
+    //private static final String fileName;
 
     // FIND A WAY TO STORE LETTER/WEIGHT PAIRS (map?)
 
@@ -42,5 +42,6 @@ public class LetterWeights {
      */
     public static int GetWeight(char letter) {
         // TODO return the weight of letter
+        return 0;
     }
 }

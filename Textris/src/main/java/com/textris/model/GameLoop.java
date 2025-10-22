@@ -64,12 +64,13 @@ public class GameLoop {
     }
 
     /**
-     * Accessor for score field
+     * accessing for score field
      *
      * @return copy of score variable
      */
     public int getScore() {
         // TODO: return copy of score
+        return 0;
     }
 
     /**

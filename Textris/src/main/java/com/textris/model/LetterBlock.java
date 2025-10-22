@@ -1,6 +1,6 @@
 package com.textris.model;
 
-import storage.LetterWeights;
+import com.textris.storage.LetterWeights;
 
 /**
  * This class represents a block containing a letter.
@@ -17,7 +17,7 @@ public class LetterBlock {
     // Chooses a letter based on LetterWeights
     // Holds the letter
 
-    private final char letter;
+    private final char letter = 'a';
 
     public LetterBlock() {
         // TODO generate letter on creation
@@ -37,5 +37,6 @@ public class LetterBlock {
      */
     public char GetLetter() {
         // TODO return a copy of letter
+        return letter;
     }
 }

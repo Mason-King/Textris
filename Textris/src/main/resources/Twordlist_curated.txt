@@ -1552,6 +1552,7 @@ beala
 beam
 beamy
 beams
+bean
 beany
 beano
 beans

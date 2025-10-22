@@ -21,8 +21,8 @@ public class GameBoard {
 
     // Instantiate enough GameCells to make a board of the
     // size that we want + 1 row for overflow
-    private final int width;
-    private final int height;
+    private final int width = 0;
+    private final int height = 0;
 
     // Create a 2D arraylist to store the grid in
     private List<List<GameCell>> grid = new ArrayList<>();
@@ -46,7 +46,12 @@ public class GameBoard {
         // TODO: use some method to get all updated strings
         // and parse them into different sections to find
         // possible words
+        List<String> strings = new ArrayList<>();
+        strings.add("string");
+        return strings;
     }
+
+
 
     /**
      * Places a letterBlock in the starting gamecell

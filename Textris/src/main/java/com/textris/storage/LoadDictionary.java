@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 // findWord(String str) //does a binary search for word
 
@@ -12,12 +13,12 @@ public class LoadDictionary {
     private static int listSize = 0;
     
     /**
-     * Loads word list tile Twordlist_curated.txt into memory throughout the game.
+     * Loads word list file Twordlist_curated.txt into memory for the duration of the game.
      * 
      * @throws IOException
      */
     public static void load() throws java.io.IOException {
-        ArrayList<String> wordsTemp = null;
+        ArrayList<String> wordsTemp = new ArrayList<>();
         
         InputStream inFile = LoadDictionary.class.getResourceAsStream("/Twordlist_curated.txt");
         BufferedReader readFile = new BufferedReader(new java.io.InputStreamReader(inFile));
@@ -35,18 +36,23 @@ public class LoadDictionary {
       
         readFile.close();
         inFile.close();
+        
+        Arrays.sort(words);
+        
+        System.out.println("Dictionary loaded.\n");
+        System.out.println("Dictionary size: " + listSize + " words\n");
     }
     
-    public boolean findWord(String str){
-        return binarySearch(str);
-    }
-    
-    private boolean binarySearch(String wordToSearch) {
+    public static boolean findWord(String wordToSearch){
         int start = 0;
         int end = (listSize - 1);
         
+        int mid = 0;
+        
         while (start <= end){
-            int mid = (int) Math.floor((start + (end - start))/2);
+            mid = start + (end - start)/2;
+            
+            System.out.println(start + " " + mid + " " + end);
             
             if (words[mid].compareTo(wordToSearch) == 0){
                 return true;
@@ -59,5 +65,6 @@ public class LoadDictionary {
             }
         }
         return false;
+        //return binarySearch(str);
     }
 }

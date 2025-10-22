@@ -52,6 +52,7 @@ public class GameCell {
      */
     public LetterBlock getBlock() {
         // TODO: return copy of letterblock main
+        return block;
     }
 
     /**
@@ -68,6 +69,7 @@ public class GameCell {
      */
     public boolean isEmpty() {
         // TODO: return true if LetterBlock main == null, false if not
+        return true;
     }
 
 
@@ -76,36 +78,40 @@ public class GameCell {
      *
      * @return left GameCell
      */
+    /*
     public GameCell getLeft() {
         // TODO: return GameCell left 
-    }
+    }*/
 
     /**
      * Allows access to right GameCell
      *
      * @return right GameCell
      */
+    /*
     public GameCell getRight() {
         // TODO: return GameCell right 
-    }
+    }*/
 
      /**
      * Allows access to upper GameCell
      *
      * @return upper GameCell
      */
+    /*
     public GameCell getUp() {
         // TODO: return GameCell up 
-    }
+    }*/
 
      /**
      * Allows access to lower GameCell
      *
      * @return lower GameCell
      */
+    /*
     public GameCell getDown() {
         // TODO: return GameCell lown 
-    }
+    }*/
     
 
 
