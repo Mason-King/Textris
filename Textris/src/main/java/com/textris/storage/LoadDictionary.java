@@ -6,7 +6,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-// findWord(String str) //does a binary search for word
+/**
+ * Manages loading the dictionary into memory and performing searches
+ * on that dictionary. Collaborator for Dictionary class.
+ * 
+ * Responsibilities:
+ * - Loads in word list text file into String[] array when Dictionary instantiates.
+ * - Performs binary search on the array when Dictionary needs to check a possible word.
+ * 
+ * @author Jason Watts
+ */
+
 
 public class LoadDictionary {
     private static String[] words = null;
@@ -43,6 +53,12 @@ public class LoadDictionary {
         System.out.println("Dictionary size: " + listSize + " words\n");
     }
     
+    /**
+     * Performs binary search on String[] array words for a given string.
+     * 
+     * @param wordToSearch
+     * @return true or false whether or not word is in dictionary
+     */
     public static boolean findWord(String wordToSearch){
         int start = 0;
         int end = (listSize - 1);
@@ -65,6 +81,5 @@ public class LoadDictionary {
             }
         }
         return false;
-        //return binarySearch(str);
     }
 }

@@ -14,21 +14,19 @@ import com.textris.storage.LoadDictionary;
  * Collaborators:
  * - LoadDictionary
  *
+ * @author Jason Watts
  */
 public class Dictionary {
 
-    //private final LoadDictionary dictionary;
     /**
      * Instantiates the dictionary reader (using LoadDictionary).
      * Loads array of 3 to 5  letter words in alphabetical order into memory
      * that persists throughout the game.
      */
     public Dictionary() {
-        //this.dictionary = new LoadDictionary();
 
         try{
             LoadDictionary.load();
-            //System.out.println("Dictionary loaded.");
         }
         catch(java.io.IOException e){
             System.out.println("Dictionary failed to import.");
@@ -40,7 +38,7 @@ public class Dictionary {
      * Checks if a string is a valid word
      *
      * @param str string to check
-     * @return 
+     * @return true or false whether LoadDictionary.findWord(str) found the word.
      */
     public boolean isValid(String str) {
         return LoadDictionary.findWord(str);
