@@ -45,7 +45,7 @@ public class GameBoard {
         
         int row = 5; int col = 0; int sAnchor = 2;
         
-        System.out.println("TEST: Constructing horidzontal word \"bean\" at [" + row + ", " + col + "],");
+        System.out.println("TEST: Constructing horizontal word \"bean\" at [" + row + ", " + col + "],");
         System.out.println("vertical word \"art\" at [" + row + "," + (col+2) + "],");
         System.out.println("searching at anchor point [" + row + ", " + sAnchor + "]");
         
@@ -196,12 +196,12 @@ public class GameBoard {
         
         List<String> strings = new ArrayList<>();
         
+        // Concatenate character arrays of valid length into strings and pass into String ArrayList
+        
         int rSize = rowLetters.size();
         int cSize = colLetters.size();
         
         System.out.println("\nhoriz word len: " + rSize + ", vertical word len: " + cSize);
-        
-        // Concatenate character arrays of valid length into strings and pass into String ArrayList
         
         if(rSize >= 3 && rSize <= 5){
             String rowWord = "";

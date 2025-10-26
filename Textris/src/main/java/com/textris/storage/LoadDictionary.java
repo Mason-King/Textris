@@ -16,6 +16,7 @@ import java.util.Arrays;
  * 
  * @author Jason Watts
  */
+
 public class LoadDictionary {
     private static String[] words = null;
     private static int listSize = 0;
@@ -31,16 +32,16 @@ public class LoadDictionary {
         InputStream inFile = LoadDictionary.class.getResourceAsStream("/Twordlist_curated.txt");
         BufferedReader readFile = new BufferedReader(new java.io.InputStreamReader(inFile));
         
-        // checking for end of file
+        // Load in each line of word list into temporary ArrayList
         String line = readFile.readLine();
         
         while (line != null) {
-            //line = line.trim();
             wordsTemp.add(line);
             listSize++;
             line = readFile.readLine();
         }
         
+        // Turn ArrayList into a less mutable array
         words = (String[]) wordsTemp.toArray(new String[0]);
       
         readFile.close();
