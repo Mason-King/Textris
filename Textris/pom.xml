@@ -10,13 +10,37 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.version>21</javafx.version>
     </properties>
+
+    <dependencies>
+        <!-- JavaFX core modules -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+    </dependencies>
+        <!-- Gson for JSON support for scores -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
+        </dependencies>
 
     <build>
         <plugins>
+            <!-- For packaging as a JAR with main class -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -24,9 +48,19 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.textris.Main</mainClass>
+                            <mainClass>com.textris.MainMenu</mainClass> <!-- UPDATE if needed -->
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+
+            <!-- JavaFX Maven Plugin for running the app -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.textris.MainMenu</mainClass> 
                 </configuration>
             </plugin>
         </plugins>
