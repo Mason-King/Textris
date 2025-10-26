@@ -14,8 +14,6 @@ package com.textris.model;
 
 import model.LetterBlock;
 
-// NOTE: define instance of an empty cell, to differentiate from the borders?
-
 public class GameCell 
 {
     
