@@ -1,7 +1,8 @@
 package com.textris;
 
 import com.textris.ui.GameWindow;
-import com.textris.model.Dictionary;
+//import com.textris.model.Dictionary;
+import com.textris.model.GameLoop;
 
 import javax.swing.*;
 
@@ -14,7 +15,7 @@ public class Main {
             new GameWindow().setVisible(true);
         });*/
         
-        Dictionary dictionary = new Dictionary();
+        /*Dictionary dictionary = new Dictionary();
         
         System.out.println("Searching for word \"beans\"...");
         
@@ -23,7 +24,9 @@ public class Main {
         }
         else {
             System.out.println("Not found");
-        }
+        }*/
+        
+        GameLoop loop = new GameLoop();
         
         System.out.println("Exiting textris game.");
     }

@@ -35,6 +35,7 @@ public class LoadDictionary {
         String line = readFile.readLine();
         
         while (line != null) {
+            //line = line.trim();
             wordsTemp.add(line);
             listSize++;
             line = readFile.readLine();
@@ -62,6 +63,8 @@ public class LoadDictionary {
         int end = (listSize - 1);
         
         int mid = 0;
+        
+        //wordToSearch = wordToSearch.strip();
         
         while (start <= end){
             mid = start + (end - start)/2;

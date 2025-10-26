@@ -1,5 +1,3 @@
-package com.textris.storage;
-
 /**
  * This class contains a reference to a file that holds the
  * weighted list of letters.
@@ -9,20 +7,36 @@ package com.textris.storage;
  *
  * Collaborators:
  *
+ * @author Cruz Shafer
  */
-public class LetterWeights {
-    
-    // Contains methods to allow other classes to retrieve the weight of a specific letter
 
-    // Name of file
-    //private static final String fileName;
+package com.textris.storage;
 
-    // FIND A WAY TO STORE LETTER/WEIGHT PAIRS (map?)
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.Map;
+
+public class LetterWeights 
+{
+    // file of cumulative weighted regions from 0 to 9999
+    private static final String fileName = "/weightsCumulative.txt";
+
+    private static TreeMap<Integer, Character> weights = new TreeMap<>();
+
+    private final int upperBound = 10000;
+
+    static 
+    {
+        readFile(fileName);
+    }
 
 
     // Private construction to prevent any instances
-    private LetterWeights() {
-        // TODO change this? might not be best way to prevent intstantiation
+    private LetterWeights() 
+    {  
+        
     }
 
     /**
@@ -30,18 +44,50 @@ public class LetterWeights {
      *
      * @param fileName file that contains letter/weight pairs 
      */
-    public static void readFile(String fileName) {
-        // TODO find method for storing letter/weight pairs
+    public static void readFile(String fileName) 
+    {
+        File weightsFile = new File(fileName);
+
+        try (Scanner reader = new Scanner(weightsFile))
+        {
+            char currentLetter = 'a';
+
+            while (reader.hasNextLine())
+            {
+                String data = reader.nextLine();
+                int weight = Integer.parseInt(data);
+
+                weights.put(weight, currentLetter);
+                currentLetter++;
+            }
+        } 
+        catch (FileNotFoundException exception)
+        {
+            System.out.println("LetterWeights file could not be found.");
+            exception.printStackTrace();
+        }
+        
     }
 
-    /**
-     * Allows classes to access a copy of the held letter but not change it.
+     /**
+     * Allows classes to generate a letter based off of an input number.
      *
-     * @param letter letter that weight is needed for 
-     * @return int weight of letter
+     * @param number number that determines letter 
+     * @return char letter
      */
-    public static int GetWeight(char letter) {
-        // TODO return the weight of letter
-        return 0;
+    public static char getLetter(int number) 
+    {
+        return weights.ceilingEntry(number).getValue();
+    }
+
+
+    /**
+     * Allows classes to access the upperBound of the number range that needs to be generated.
+     *
+     * @return int upperBound
+     */
+    public static int getUpperBound() 
+    {
+        return 10000;
     }
 }

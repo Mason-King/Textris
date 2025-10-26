@@ -1,7 +1,3 @@
-package com.textris.model;
-
-import com.textris.model.LetterBlock;
-
 /**
  * This class represents a cell in the GameBoard that holds a
  * LetterBlock.
@@ -13,27 +9,38 @@ import com.textris.model.LetterBlock;
  * Collaborators:
  * - LetterBlock
  * - GameBoard
+ * 
+ * @author Cruz Shafer
  */
-public class GameCell {
-    
-    // The block that is hold in the cell
-    private LetterBlock block;
+package com.textris.model;
 
-    // The cells neighboring the main cell
-    // Add diagonals if needed
-    private GameCell left;
-    private GameCell right;
-    private GameCell up;
-    private GameCell down;
+import com.textris.model.LetterBlock;
+
+// NOTE: define instance of an empty cell, to differentiate from the borders?
+
+public class GameCell 
+{
+    
+    private LetterBlock block;
+    private LetterBlock empty = new LetterBlock('\0');
+
+    private GameCell left, right, up, down;
 
     /**
-     * Creates the empty GameCell that is prepared to accept a 
-     * LetterBlock.
-     *
-     * @param main the initial LetterBlock stored (usually null?)
+     * Creates the empty GameCell that is prepared to accept a LetterBlock.
      */
-    public GameCell(LetterBlock block) {
-        // TODO: allow instantiation to null LetterBlock
+    public GameCell() 
+    {
+        this.block = this.empty;
+    }
+    
+    // JASON WATTS - MIGHT BE UNNECCESSARY, BUT MADE JUST IN CASE
+    public GameCell(GameCell copyCell){
+        this.block = new LetterBlock(copyCell.getBlock().getLetter());
+        this.left = copyCell.getLeft();
+        this.right = copyCell.getRight();
+        this.up = copyCell.getUp();
+        this.down = copyCell.getDown();
     }
 
     /**
@@ -41,8 +48,12 @@ public class GameCell {
      *
      * @param newBlock new block to put in
      */
-    public void setBlock(LetterBlock newBlock) {
-        // TODO: set LetterBlock block to the newBlock
+    public void setBlock(LetterBlock newBlock) 
+    {
+        if (newBlock != null)
+        {
+            this.block = newBlock;
+        } 
     }
 
     /**
@@ -50,16 +61,17 @@ public class GameCell {
      *
      * @return copy of letterblock
      */
-    public LetterBlock getBlock() {
-        // TODO: return copy of letterblock main
-        return block;
+    public LetterBlock getBlock() 
+    {
+        return this.block;
     }
 
     /**
      * Clears the letterblock from the gamecell, leaving it empty
      */
-    public void clear() {
-        // TODO: clear letterblock from gamecell
+    public void clear() 
+    {
+        this.block = this.empty;
     }
 
     /**
@@ -67,9 +79,33 @@ public class GameCell {
      *
      * @return if empty
      */
-    public boolean isEmpty() {
-        // TODO: return true if LetterBlock main == null, false if not
-        return true;
+    public boolean isEmpty() 
+    {
+        boolean isEmpty = false;
+        
+        if (this.block == this.empty)
+        {
+            isEmpty = true;
+        }
+
+        return isEmpty;
+    }
+
+    /**
+     * Allows check if the GameCell has an occupied cell below it
+     *
+     * @return if the GameCell.down is occupied
+     */
+    public boolean canFall() 
+    {
+        boolean canFall = false;
+        
+        if (this.down.getBlock() == this.empty)
+        {
+            canFall = true;
+        }
+
+        return canFall;
     }
 
 
@@ -78,40 +114,40 @@ public class GameCell {
      *
      * @return left GameCell
      */
-    /*
-    public GameCell getLeft() {
-        // TODO: return GameCell left 
-    }*/
+    public GameCell getLeft()
+    {
+        return this.left;
+    }
 
     /**
      * Allows access to right GameCell
      *
      * @return right GameCell
      */
-    /*
-    public GameCell getRight() {
-        // TODO: return GameCell right 
-    }*/
+    public GameCell getRight() 
+    {
+        return this.right;
+    }
 
      /**
      * Allows access to upper GameCell
      *
      * @return upper GameCell
      */
-    /*
-    public GameCell getUp() {
-        // TODO: return GameCell up 
-    }*/
+    public GameCell getUp() 
+    {
+        return this.up; 
+    }
 
      /**
      * Allows access to lower GameCell
      *
      * @return lower GameCell
      */
-    /*
-    public GameCell getDown() {
-        // TODO: return GameCell lown 
-    }*/
+    public GameCell getDown() 
+    {
+        return this.down; 
+    }
     
 
 
@@ -120,8 +156,12 @@ public class GameCell {
      *
      * @param newLeft new GameCell for left
      */
-    public void setLeft(GameCell newLeft) {
-        // TODO: check input, assign to GameCell left 
+    public void setLeft(GameCell newLeft) 
+    {
+        if (newLeft != null)
+        {
+            this.left = newLeft; 
+        }
     }
 
     /**
@@ -129,8 +169,12 @@ public class GameCell {
      *
      * @param newRight new GameCell for right
      */
-    public void setRight(GameCell newRight) {
-        // TODO: check input, assign to GameCell right 
+    public void setRight(GameCell newRight) 
+    {
+        if (newRight != null)
+        {
+            this.right = newRight; 
+        }
     }
 
     /**
@@ -138,8 +182,12 @@ public class GameCell {
      *
      * @param newUp new GameCell for up
      */
-    public void setUp(GameCell newUp) {
-        // TODO: check input, assign to GameCell up 
+    public void setUp(GameCell newUp) 
+    {
+        if (newUp != null)
+        {
+            this.up = newUp;
+        } 
     }
 
     /**
@@ -147,33 +195,49 @@ public class GameCell {
      *
      * @param newDown new GameCell for down
      */
-    public void setDown(GameCell newDown) {
-        // TODO: check input, assign to GameCell down 
+    public void setDown(GameCell newDown) 
+    {
+        if (newDown != null)
+        {
+            this.down = newDown;
+        } 
     }
 
 
     /**
      * Moves the current LetterBlock left
      */
-    public void moveLeft() {
-        // TODO: if there's nothing in GameCell.left,
-        // move LetterBlock block there
+    public void moveLeft() 
+    {
+        if (left.getBlock() == this.empty)
+        {
+            left.setBlock(this.block);
+            this.block = this.empty;
+        }
     }
 
     /**
      * Moves the current LetterBlock right
      */
-    public void moveRight() {
-        // TODO: if there's nothing in GameCell.right,
-        // move LetterBlock block there
+    public void moveRight() 
+    {
+        if (right.getBlock() == this.empty)
+        {
+            right.setBlock(this.block);
+            this.block = this.empty;
+        }
     }
 
     /**
      * Moves the current LetterBlock down
      */
-    public void moveDown() {
-        // TODO: if there's nothing in GameCell.down,
-        // move LetterBlock block there
+    public void moveDown() 
+    {
+        if (down.getBlock() == this.empty)
+        {
+            down.setBlock(this.block);
+            this.block = this.empty;
+        }
     }
 
 }

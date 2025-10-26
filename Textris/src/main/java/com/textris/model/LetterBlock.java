@@ -1,7 +1,3 @@
-package com.textris.model;
-
-import com.textris.storage.LetterWeights;
-
 /**
  * This class represents a block containing a letter.
  *
@@ -11,32 +7,47 @@ import com.textris.storage.LetterWeights;
  * Collaborators:
  * - LetterWeights
  *
+ * @author Cruz Shafer
  */
-public class LetterBlock {
-    
-    // Chooses a letter based on LetterWeights
-    // Holds the letter
 
-    private final char letter = 'a';
+package com.textris.model;
 
-    public LetterBlock() {
-        // TODO generate letter on creation
-    }
+
+import com.textris.storage.LetterWeights;
+import java.util.Random;
+
+public class LetterBlock 
+{
+    private final char letter;
 
     /**
-     * Generates a letter based on the weights of letters. Only called on construction.
+     * Generates a letter based on the weights of letters carried in LetterWeights. Only called on construction.
      */
-    private void GenerateLetter() {
-        // TODO assign a letter based on weights in storage.LetterWeights
+    public LetterBlock() 
+    {
+        Random generator = new Random();
+
+        int randomInt = generator.nextInt(LetterWeights.getUpperBound());
+
+        letter = LetterWeights.getLetter(randomInt);
+    }
+    
+    /**
+     * Overloaded parameter that initiates a placeholder LetterBlock
+     * 
+     * @param code if 0, exists as a placeholder block. otherwise useless
+     */
+    public LetterBlock(char code) 
+    {
+        letter = code;
     }
 
     /**
-     * Allows classes to access a copy of the held letter but not change it.
+     * Allows classes to view the letter stored.
      *
      * @return char copy of letter
      */
-    public char GetLetter() {
-        // TODO return a copy of letter
+    public char getLetter() {
         return letter;
     }
 }

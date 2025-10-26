@@ -12,11 +12,14 @@ package com.textris.model;
  * - Dictionary
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameLoop {
 
     // Create a new gameboard of the correct size
     private GameBoard board;
-    private Dictionary dictionary;
+    private Dictionary dict;
     private LetterBlock current;
     private int score;
 
@@ -26,9 +29,14 @@ public class GameLoop {
      * @param board the actual grid of cells
      * @param dictionary the instance of the dictionary
      */
-    public GameLoop(GameBoard board, Dictionary dictionary) {
+    public GameLoop() {
         // TODO: initialize fields
-        dictionary = new Dictionary();
+        
+        // !! TESTING !!
+        dict = new Dictionary();
+        board = new GameBoard();
+        
+        this.findWords();
     }
     
     /**
@@ -62,6 +70,19 @@ public class GameLoop {
         // TODO: use GameBoard.detectWords() and Dictionary.isValid() to find words
         // in the grid; use GameCell.clear() to delete, drop remaining blocks
         // and call addToScore(word.length) if found
+        
+        GameCell dummyCell = board.testWordSearch(); // !! NOT IDEAL, FOR TESTING ONLY !!
+        
+        List<String> newWords = new ArrayList<>();
+        newWords = board.detectWords(dummyCell);
+        
+        for(String str : newWords){
+            System.out.println("\nSearching \"" + str + "\"...\n");
+            if(dict.isValid(str)){
+                System.out.println("\n" + str + " is valid!");
+            }
+        }
+        
     }
 
     /**
