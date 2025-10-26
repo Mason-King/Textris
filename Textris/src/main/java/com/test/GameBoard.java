@@ -10,9 +10,9 @@
  * - LetterBlock
  * - GameCell
  */
-package com.textris.model;
+package test;
 
-import model.GameCell;
+import test.GameCell;
 
 public class GameBoard 
 {
@@ -86,6 +86,7 @@ public class GameBoard
         }
     }
 
+
     /**
      * Get the number of rows in the GameBoard
      * 
@@ -107,23 +108,47 @@ public class GameBoard
     }
 
 
-    /**
-     * Scans board and turns letterblocks into strings that will then be used to 
-     * search for strings
-     * @return new ArrayList of strings/possible words
-     */
-    public List<String> detectWords() {
-        // TODO: use some method to get all updated strings
-        // and parse them into different sections to find
-        // possible words
-    }
+    // /**
+    //  * Scans board and turns letterblocks into strings that will then be used to 
+    //  * search for strings
+    //  * @return new ArrayList of strings/possible words
+    //  */
+    // public List<String> detectWords() {
+    //     // TODO: use some method to get all updated strings
+    //     // and parse them into different sections to find
+    //     // possible words
+    // }
 
-    /**
-     * Places a letterBlock in the starting gamecell
-     *
-     * @param block to be placed
-     */
-    public void placeBlock(LetterBlock block) {
-        // TODO: spawn block in upper leftmost gamecell
-    }
+    // /**
+    //  * Places a letterBlock in the starting gamecell
+    //  *
+    //  * @param block to be placed
+    //  */
+    // public void placeBlock(LetterBlock block) {
+    //     // TODO: spawn block in upper leftmost gamecell
+    // }
+
+
+
+
+     public static void main(String[] args) 
+     {
+        GameBoard board = new GameBoard();
+
+        for (int i = 0; i < board.getRowCount(); i++)
+        {
+            for (int j = 0; j < board.getColCount(); j++)
+            {
+                System.out.print(board.grid[i][j].getBlock().getLetter() + " ");
+            }
+
+            System.out.println();
+        }
+
+
+        GameCell cell = board.grid[2][4];
+        System.out.println(cell.getLeft().getBlock().getLetter());
+        System.out.println(board.grid[2][3].getBlock().getLetter());
+
+     }
 }

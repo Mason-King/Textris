@@ -31,6 +31,16 @@ public class LetterBlock
     }
 
     /**
+     * Overloaded parameter that initiates a placeholder LetterBlock
+     * 
+     * @param code if 0, exists as a placeholder block. otherwise useless
+     */
+    public LetterBlock(int code) 
+    {
+        letter = '0';
+    }
+
+    /**
      * Allows classes to view the letter stored.
      *
      * @return char copy of letter

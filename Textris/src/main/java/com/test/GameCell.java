@@ -10,9 +10,9 @@
  * - LetterBlock
  * - GameBoard
  */
-package com.textris.model;
+package test;
 
-import model.LetterBlock;
+import test.LetterBlock;
 
 // NOTE: define instance of an empty cell, to differentiate from the borders?
 

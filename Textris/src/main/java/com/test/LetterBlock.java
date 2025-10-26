@@ -32,23 +32,21 @@ public class LetterBlock
     }
 
     /**
+     * Overloaded parameter that initiates a placeholder LetterBlock
+     * 
+     * @param code if 0, exists as a placeholder block. otherwise useless
+     */
+    public LetterBlock(int code) 
+    {
+        letter = '0';
+    }
+
+    /**
      * Allows classes to view the letter stored.
      *
      * @return char copy of letter
      */
     public char getLetter() {
         return letter;
-    }
-
-
-
-    public static void main(String[] args) {
-        LetterBlock all;
-        for (int i = 0; i < 100; i++)
-        {
-            all = new LetterBlock();
-            System.out.println(all.getLetter() + "\n"); 
-        }
-
     }
 }
