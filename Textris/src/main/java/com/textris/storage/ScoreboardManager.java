@@ -1,4 +1,4 @@
-package com.textris.storage;
+package com.textris.data;
 
 import java.io.*;
 import java.nio.file.*;
