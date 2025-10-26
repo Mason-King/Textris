@@ -1,7 +1,7 @@
 package com.textris.ui;
 
-import com.textris.storage.ScoreEntry;
-import com.textris.storage.ScoreManager;
+import com.textris.data.ScoreEntry;
+import com.textris.data.ScoreManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
