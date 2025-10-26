@@ -1,4 +1,4 @@
-package com.textris.data;
+package com.textris.storage;
 
 /**
  * Represents a single player's score entry in the game.
