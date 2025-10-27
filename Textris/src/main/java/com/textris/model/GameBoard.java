@@ -14,8 +14,6 @@
  */
 package com.textris.model;
 
-package com.textris.model;
-
 import com.textris.model.GameCell;
 import java.util.ArrayList;
 import java.util.List;
