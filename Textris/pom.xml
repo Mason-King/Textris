@@ -28,7 +28,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-    </dependencies>
         <!-- Gson for JSON support for scores -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -36,7 +35,7 @@
             <version>2.10.1</version>
         </dependency>
 
-        </dependencies>
+    </dependencies>
 
     <build>
         <plugins>
