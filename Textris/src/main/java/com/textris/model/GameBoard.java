@@ -12,6 +12,7 @@
  * 
  * @authors Cruz Shafer, Jason Watts
  */
+package com.textris.model;
 
 package com.textris.model;
 
@@ -90,7 +91,6 @@ public class GameBoard {
             }
         }
     }
-
 
     /**
      * Get the number of rows in the GameBoard

@@ -12,7 +12,6 @@
 
 package com.textris.model;
 
-
 import com.textris.storage.LetterWeights;
 import java.util.Random;
 
