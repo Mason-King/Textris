@@ -1,7 +1,7 @@
 package com.textris.ui;
 
-import com.textris.game.GameBoard;
-import com.textris.game.LetterBlock;
+import com.textris.model.GameBoard;
+import com.textris.model.LetterBlock;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
