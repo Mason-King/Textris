@@ -7,6 +7,7 @@
  *
  * Collaborators:
  *
+ * @author Cruz Shafer
  */
 
 package com.textris.storage;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class LetterWeights 
 {
     // file of cumulative weighted regions from 0 to 9999
-    private static final String fileName = "weightsCumulative.txt";
+    private static final String fileName = "/weightsCumulative.txt";
 
     private static TreeMap<Integer, Character> weights = new TreeMap<>();
 
