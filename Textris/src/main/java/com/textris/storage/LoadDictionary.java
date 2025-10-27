@@ -65,12 +65,8 @@ public class LoadDictionary {
         
         int mid = 0;
         
-        //wordToSearch = wordToSearch.strip();
-        
         while (start <= end){
             mid = start + (end - start)/2;
-            
-            System.out.println(start + " " + mid + " " + end);
             
             if (words[mid].compareTo(wordToSearch) == 0){
                 return true;

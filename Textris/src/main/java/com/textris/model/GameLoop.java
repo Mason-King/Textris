@@ -36,7 +36,7 @@ public class GameLoop {
         dict = new Dictionary();
         board = new GameBoard();
         
-        this.findWords();
+        //this.findWords();
     }
     
     /**
@@ -71,7 +71,8 @@ public class GameLoop {
         // in the grid; use GameCell.clear() to delete, drop remaining blocks
         // and call addToScore(word.length) if found
         
-        GameCell dummyCell = board.testWordSearch(); // !! NOT IDEAL, FOR TESTING ONLY !!
+        //GameCell dummyCell = board.testWordSearch(); // !! NOT IDEAL, FOR TESTING ONLY !!
+        GameCell dummyCell = null;
         
         List<String> newWords = new ArrayList<>();
         newWords = board.detectWords(dummyCell);
