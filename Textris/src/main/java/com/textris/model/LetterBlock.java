@@ -17,6 +17,8 @@ import java.util.Random;
 public class LetterBlock 
 {
     private final char letter;
+    private int row;
+    private int col;
 
     /**
      * Generates a letter based on the weights of letters carried in LetterWeights. Only called on construction.
@@ -47,5 +49,21 @@ public class LetterBlock
      */
     public char getLetter() {
         return letter;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
     }
 }

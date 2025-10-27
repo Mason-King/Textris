@@ -1,6 +1,5 @@
 package com.textris.model;
 
-import storage.LoadDictionary;
 
 /**
  * This class uses a txt file of words to check if a word has
@@ -31,5 +30,6 @@ public class Dictionary {
      */
     public boolean isValid(String str) {
         // TODO: use reference to LoadDictionary to check if a string is a word
+        return false;
     }
 }

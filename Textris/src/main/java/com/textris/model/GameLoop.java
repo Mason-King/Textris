@@ -1,8 +1,5 @@
 package com.textris.model;
 
-import model.GameBoard;
-import model.Dictionary;
-
 /**
  * Handles the state of the game
  *
@@ -21,7 +18,10 @@ public class GameLoop {
     private GameBoard board;
     private Dictionary dictionary;
     private LetterBlock current;
+    private LetterBlock previous;
     private int score;
+    private boolean gameOver;
+
 
     /**
      * Creates and manages the different aspects of the game in relation to one another
@@ -30,14 +30,52 @@ public class GameLoop {
      * @param dictionary the instance of the dictionary
      */
     public GameLoop(GameBoard board, Dictionary dictionary) {
-        // TODO: initialize fields
+        this.board = board;
+        this.dictionary = dictionary;
+        this.previous = null;
+        this.score = 0;
     }
-    
+
+    /**
+     * Called each tick to update the screen/move blocks
+     */
+    public void tick() {
+        if (gameOver) return;
+
+        if(current == null) {
+            dropBlock();
+            return;
+        }
+
+        if (board.canMove(current, Direction.DOWN)) {
+            board.move(current, Direction.DOWN);
+        } else {
+            setBlock();
+        }
+
+        board.printBoard();
+    }
+
     /**
      * Starts dropping the current block from the top left
      */
     public void dropBlock() {
-        // TODO: implement block-dropping logic
+        // TODO: implement block-dropping logic - Need to check can drop on board
+        current = new LetterBlock();
+
+        //Always spawn top center
+        int spawnRow = 0,  spawnCol = board.getColCount() / 2;
+
+        current.setRow(spawnRow);
+        current.setCol(spawnCol);
+
+        //placeBlock returns a boolean
+        if (!board.placeBlock(current)) {
+            System.out.println("GAME OVER");
+            current = null;
+            gameOver = true;
+            //TODO: implement ending logic
+        }
     }
 
     /**
@@ -45,7 +83,10 @@ public class GameLoop {
      * of the grid or another block
      */
     public void setBlock() {
-        // TODO: leave block in place, check grid for words
+        previous = current;
+        current = null;
+        findWords();
+        fallingBlocks();
     }
 
     /**
@@ -54,6 +95,7 @@ public class GameLoop {
     public void fallingBlocks() {
         // TODO: allow all blocks already on board to fall down
         // so that they rest at the bottom (or on top of another block)
+        board.applyGravity();
     }
 
     /**
@@ -64,6 +106,16 @@ public class GameLoop {
         // TODO: use GameBoard.detectWords() and Dictionary.isValid() to find words
         // in the grid; use GameCell.clear() to delete, drop remaining blocks
         // and call addToScore(word.length) if found
+        var words = board.detectWords();
+
+        for (String word : words) {
+            if(dictionary.isValid(word)) {
+                //TODO: Clear word from board
+                //Add to score
+                addToScore(0);
+            }
+        }
+        fallingBlocks();
     }
 
     /**
@@ -72,7 +124,7 @@ public class GameLoop {
      * @return copy of score variable
      */
     public int getScore() {
-        // TODO: return copy of score
+        return score;
     }
 
     /**
@@ -81,6 +133,31 @@ public class GameLoop {
      * @param bonus as the addition to the score
      */
     public void addToScore(int bonus) {
-        // TODO: add bonus to score
+        score += bonus;
+    }
+
+    public void moveCurrent(Direction direction) {
+        if (current != null && board.canMove(current, direction)) {
+            board.move(current, direction);
+        }
+    }
+
+    public void dropToBottom() {
+        while (current != null && board.canMove(current, Direction.DOWN)) {
+            board.move(current, Direction.DOWN);
+        }
+        setBlock();
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void reset() {
+        //TODO: Implement board clearing
+        this.score = 0;
+        this.current = null;
+        this.previous = null;
+        this.gameOver = false;
     }
 }
