@@ -7,6 +7,7 @@
  * Collaborators:
  * - LetterWeights
  *
+ * @author Cruz Shafer
  */
 
 package com.textris.model;
@@ -31,15 +32,15 @@ public class LetterBlock
 
         letter = LetterWeights.getLetter(randomInt);
     }
-
+    
     /**
      * Overloaded parameter that initiates a placeholder LetterBlock
      * 
      * @param code if 0, exists as a placeholder block. otherwise useless
      */
-    public LetterBlock(int code) 
+    public LetterBlock(char code) 
     {
-        letter = '0';
+        letter = code;
     }
 
     /**

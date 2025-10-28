@@ -9,16 +9,18 @@
  * Collaborators:
  * - LetterBlock
  * - GameBoard
+ * 
+ * @author Cruz Shafer
  */
 package com.textris.model;
 
-// NOTE: define instance of an empty cell, to differentiate from the borders?
+import com.textris.model.LetterBlock;
 
 public class GameCell 
 {
     
     private LetterBlock block;
-    private LetterBlock empty = new LetterBlock(0);
+    private LetterBlock empty = new LetterBlock('\0');
 
     private GameCell left, right, up, down;
 
@@ -28,6 +30,15 @@ public class GameCell
     public GameCell() 
     {
         this.block = this.empty;
+    }
+    
+    // JASON WATTS - MIGHT BE UNNECCESSARY, BUT MADE JUST IN CASE
+    public GameCell(GameCell copyCell){
+        this.block = new LetterBlock(copyCell.getBlock().getLetter());
+        this.left = copyCell.getLeft();
+        this.right = copyCell.getRight();
+        this.up = copyCell.getUp();
+        this.down = copyCell.getDown();
     }
 
     /**

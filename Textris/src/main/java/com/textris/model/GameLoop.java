@@ -12,11 +12,14 @@ package com.textris.model;
  * - Dictionary
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameLoop {
 
     // Create a new gameboard of the correct size
     private GameBoard board;
-    private Dictionary dictionary;
+    private Dictionary dict;
     private LetterBlock current;
     private LetterBlock previous;
     private int score;
@@ -119,7 +122,7 @@ public class GameLoop {
     }
 
     /**
-     * Accessor for score field
+     * accessing for score field
      *
      * @return copy of score variable
      */
