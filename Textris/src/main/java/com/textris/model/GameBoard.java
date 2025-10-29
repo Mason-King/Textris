@@ -14,6 +14,9 @@
  */
 package com.textris.model;
 
+import java.util.List;
+
+import com.textris.model.GameCell;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +89,48 @@ public class GameBoard
                     cell.setDown(null);
                 }
             }
+        }
+    }
+
+    public void move(LetterBlock block, Direction dir) {
+        int row = block.getRow();
+        int col = block.getCol();
+
+        grid[row][col].clear();
+
+        switch (dir) {
+            case DOWN:
+                row += 1;
+                break;
+            case LEFT:
+                col -= 1;
+                break;
+            case RIGHT:
+                col += 1;
+                break;
+        }
+
+        grid[row][col].setBlock(block);
+        block.setRow(row);
+        block.setCol(col);
+    }
+
+    public boolean canMove(LetterBlock block, Direction dir) {
+        int row = block.getRow();
+        int col = block.getCol();
+
+        switch (dir) {
+            case DOWN:
+                if (row == rows - 1) return false;
+                return grid[row + 1][col].isEmpty();
+            case LEFT:
+                if (col == 0) return false;
+                return grid[row][col - 1].isEmpty();
+            case RIGHT:
+                if (col == cols - 1) return false;
+                return grid[row][col + 1].isEmpty();
+            default:
+                return false;
         }
     }
 
@@ -256,4 +301,65 @@ public class GameBoard
         
         return strings;
     }
+
+    /**
+     * Places a letterBlock in the starting gamecell
+     *
+     * @param block to be placed
+     */
+    public boolean placeBlock(LetterBlock block) {
+        int row = block.getRow();
+        int col = block.getCol();
+
+        if (row < 0 || row >= this.rows || col < 0 || col >= this.cols) {
+            return false;
+        }
+
+        GameCell cell = grid[row][col];
+
+        if(!cell.isEmpty()) {
+            return false;
+        }
+
+        cell.setBlock(block);
+        return true;
+    }
+
+    public void applyGravity() {
+        for(int col = 0; col < this.cols; col++) {
+            for (int row = 0; row < this.rows; row++) {
+                GameCell cur = grid[row][col];
+                if (!cur.isEmpty()) {
+                    int dropRow = row;
+                    while (dropRow + 1 < rows && grid[dropRow+1][col].isEmpty()) {
+                        dropRow++;
+                    }
+                    if (dropRow != row) {
+                        LetterBlock block = cur.getBlock();
+                        cur.clear();
+                        grid[dropRow][col].setBlock(block);
+                        block.setRow(dropRow);
+                    }
+                }
+            }
+        }
+    }
+
+    public void printBoard() {
+        System.out.println("---- BOARD ----");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                GameCell cell = grid[i][j];
+                if (cell.isEmpty()) {
+                    System.out.print("* ");
+                } else {
+                    System.out.print(cell.getBlock().getLetter() + " ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("---------------");
+    }
+
+
 }
