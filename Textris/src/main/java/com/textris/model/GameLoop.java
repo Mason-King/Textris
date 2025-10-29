@@ -69,13 +69,11 @@ public class GameLoop
 
         if (board.canMove(current, Direction.DOWN)) {
             board.move(current, Direction.DOWN);
-            inputHandler.updateActiveCell(current);
         } else {
             setBlock();
             dropBlock();
         }
 
-//        System.out.println("Tick: row=" + current.getRow() + ", col=" + current.getCol());
     }
 
     /**
@@ -109,28 +107,16 @@ public class GameLoop
      */
     public void setBlock() {
         findWords();
-
         previous = current;
         current = null;
-
         applyGravity();
-
 
         if (!inputHandler.getActiveCell().canFall())
         {
-            // TODO: stop inputHandler from trying to move the cell
             scorer.addScore(1);
             findWords();
         }
     }
-//    public void dropBlock()
-//    {
-//        board.getStartingCell().setBlock(current);
-//        inputHandler.setActiveCell(board.getStartingCell());
-//        inputHandler.setActiveBlock(current, fallingBlock);
-//
-//
-//    }
 
     /**
      * Sets a block in place once it reaches the bottom 
@@ -193,6 +179,14 @@ public class GameLoop
         board.applyGravity();
     }
 
+    private Direction opposite(Direction dir) {
+        return switch (dir) {
+            case UP -> Direction.DOWN;
+            case DOWN -> Direction.UP;
+            case LEFT -> Direction.RIGHT;
+            case RIGHT -> Direction.LEFT;
+        };
+    }
 
     /**
      * accessing for score field

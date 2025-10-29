@@ -61,46 +61,24 @@ public class GameBoard
             }
         }
 
-        for (int i = 0; i < cols; i++)
-        {
-            for (int j = 0; j < rows; j++)
-            {
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
                 GameCell cell = grid[i][j];
-                if (i > 0 && i < (cols - 1))
-                {
-                    cell.setLeft(grid[i-1][j]);
-                    cell.setRight(grid[i+1][j]);
-                }
-                else if (i == 0)
-                {
-                    cell.setLeft(null);
-                    cell.setRight(grid[i+1][j]);
-                }
-                else if (i == (cols - 1))
-                {
-                    cell.setLeft(grid[i-1][j]);
-                    cell.setRight(null);
-                }
-
-                if (j > 0 && j < (rows - 1))
-                {
-                    cell.setUp(grid[i][j-1]);
-                    cell.setDown(grid[i][j+1]);
-                }
-                else if (j == 0)
-                {
-                    cell.setUp(null);
-                    cell.setDown(grid[i][j+1]);
-                }
-                else if (j == (rows - 1))
-                {
-                    cell.setUp(grid[i][j-1]);
-                    cell.setDown(null);
-                }
+                cell.setLeft(i > 0 ? grid[i - 1][j] : null);
+                cell.setRight(i < cols - 1 ? grid[i + 1][j] : null);
+                cell.setUp(j > 0 ? grid[i][j - 1] : null);
+                cell.setDown(j < rows - 1 ? grid[i][j + 1] : null);
             }
         }
     }
 
+    /**
+     * Moves a LetterBlock in the given direction if possible.
+     * Updates the GameCell grid, and the blocks row and column.
+     *
+     * @param block - LetterBlock to move
+     * @param dir - Direction to move the block (LEFT, RIGHT, DOWN)
+     */
     public void move(LetterBlock block, Direction dir) {
         int row = block.getRow();
         int col = block.getCol();
@@ -138,6 +116,13 @@ public class GameBoard
 
     }
 
+    /**
+     * Checks if a LetterBlock can move in a specific direction
+     *
+     * @param block - LetterBlock to check
+     * @param dir - Direction to check (LEFT, RIGHT, DOWN)
+     * @return - boolean if the block can move
+     */
     public boolean canMove(LetterBlock block, Direction dir) {
         int row = block.getRow();
         int col = block.getCol();
@@ -247,26 +232,20 @@ public class GameBoard
         List<String> strings = new ArrayList<>();
         
         // Concatenate character arrays of valid length into strings and pass into String ArrayList
-        
-        int rSize = rowLetters.size();
-        int cSize = colLetters.size();
-        
-        System.out.println("\nhoriz word len: " + rSize + ", vertical word len: " + cSize);
-        
-        if (rSize >= 3 && rSize <= 5)
-        {
-            String rowWord = "";
-            for (char c: rowLetters) rowWord += c;
-            strings.add(rowWord);
+        int rSize = rowLetters.size(), cSize = colLetters.size();
+
+        if (rSize >= 3 && rSize <= 5) {
+            StringBuilder sb = new StringBuilder();
+            rowLetters.forEach(sb::append);
+            strings.add(sb.toString());
         }
         
-        if (cSize >= 3 && cSize <= 5)
-        {
-            String colWord = "";
-            for (char c: colLetters) colWord += c;
-            strings.add(colWord);
+        if (cSize >= 3 && cSize <= 5) {
+            StringBuilder sb = new StringBuilder();
+            colLetters.forEach(sb::append);
+            strings.add(sb.toString());
         }
-        
+
         return strings;
     }
 
@@ -295,22 +274,15 @@ public class GameBoard
 
     public void applyGravity() {
         Platform.runLater(() -> {
-            for (int col = 0; col < this.cols; col++) {
-                for (int row = this.rows - 2; row >= 0; row--) {
+            // Start from second-to-last row and go up
+            for (int row = rows - 2; row >= 0; row--) {
+                for (int col = 0; col < cols; col++) {
                     GameCell cur = grid[col][row];
                     if (!cur.isEmpty()) {
-                        int dropRow = row;
-                        while (dropRow + 1 < rows && grid[col][dropRow + 1].isEmpty()) {
-                            dropRow++;
-                        }
-                        if (dropRow != row) {
-                            LetterBlock block = cur.getBlock();
-                            cur.clear();
-                            grid[col][dropRow].setBlock(block);
-                            block.setRow(dropRow);
-
-                            // Instant move
-                            block.getBlock().getBlock().setLayoutY(dropRow * GameWindow.SIZE);
+                        LetterBlock block = cur.getBlock();
+                        // Keep moving down while possible
+                        while (canMove(block, Direction.DOWN)) {
+                            move(block, Direction.DOWN);
                         }
                     }
                 }
