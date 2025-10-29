@@ -15,8 +15,7 @@ public class Main {
         Application.launch(MainMenuUI.class); // Launch JavaFX UI
 
         System.out.println("Exiting textris game.");
-    }
-}   
+   
         // Swing must run oin the EDT, else can lead to future issues.
         /*SwingUtilities.invokeLater(() -> {
             new GameWindow().setVisible(true);
