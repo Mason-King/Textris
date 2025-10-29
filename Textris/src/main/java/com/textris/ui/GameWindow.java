@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.textris.media.Block;
+
 public class GameWindow
 {
     public static final int SIZE = 60;
@@ -16,24 +18,33 @@ public class GameWindow
     public static int[][] MESH = new int[XMAX/SIZE][YMAX/SIZE];
     private static Pane pane = new Pane();
 
-    //private static Block nextBlock = Block.create();
+    private static Scene scene;
+
+    private static Block nextBlock = new Block('x');
 
     public static void show(Stage primaryStage)
     {
         Line line = new Line(XMAX, 0, XMAX, YMAX);
-        line.setStroke(Color.BLUEVIOLET);
+        line.setStroke(Color.WHITE);
         pane.getChildren().add(line);
 
+        pane.getChildren().add(nextBlock.getBlock());
 
 
-
-        Scene scene = new Scene(pane, XMAX + 180, YMAX);
+        scene = new Scene(pane, XMAX + 180, YMAX);
         pane.setStyle("-fx-background-color: black;");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Textris - Game Window");
         primaryStage.show();
     }
 
+    public static Scene getScene()
+    {
+        return scene;
+    }
 
-
+    public static Block getActiveBlock()
+    {
+        return nextBlock;
+    }
 }

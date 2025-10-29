@@ -12,6 +12,7 @@
 
 package com.textris.ui;
 
+import com.textris.media.Block;
 import com.textris.model.GameBoard;
 import com.textris.model.GameCell;
 import com.textris.model.LetterBlock;
@@ -20,9 +21,10 @@ import javafx.scene.input.KeyCode;
 
 public class InputHandler 
 {
-    // private final GameBoard board;
+    private final GameBoard board;
     private GameCell currentCell;
     private LetterBlock currentBlock;
+    private Block currentBlockSprite;
 
     /**
      * Creates a new InputHandler that listens for keyboard input.
@@ -32,7 +34,7 @@ public class InputHandler
      */
     public InputHandler(Scene scene, GameBoard gameBoard)
     {
-        //this.board = gameBoard;
+        this.board = gameBoard;
         initializeKeyListeners(scene);
     }
 
@@ -47,13 +49,24 @@ public class InputHandler
     }
 
     /**
+     * Returns the current cell where the active block resides.
+     *
+     * @return the active cell
+     */
+    public GameCell getActiveCell() 
+    {
+        return this.currentCell;
+    }
+
+    /**
      * Sets the currently active block that responds to player input.
      *
      * @param block the currently falling block
      */
-    public void setActiveBlock(LetterBlock block) 
+    public void setActiveBlock(LetterBlock block, Block sprite) 
     {
         this.currentBlock = block;
+        this.currentBlockSprite = sprite;
     }
 
     /**
@@ -98,6 +111,9 @@ public class InputHandler
     private void moveCurrentLeft()
     {
         currentCell.moveLeft();
+        currentCell = currentCell.getLeft();
+        
+
     }
     
 
@@ -107,6 +123,7 @@ public class InputHandler
     private void moveCurrentRight()
     {
         currentCell.moveRight();
+        currentCell = currentCell.getRight();
     }
 
 
@@ -116,6 +133,7 @@ public class InputHandler
     private void moveCurrentDown()
     {
         currentCell.moveDown();
+        currentCell = currentCell.getDown();
     }
 
 // Possibly use JAVAFX to move the physical rectangle (block) created in media.Block and defined (size) in ui.GameWindow !!!!!!

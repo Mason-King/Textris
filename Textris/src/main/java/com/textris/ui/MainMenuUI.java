@@ -11,6 +11,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+// CHECK IF JAVAFX NEEDS TO BE BUNDLED WITH PROJECT
+
+
 /**
  * The {@code MainMenuUI} class represents the main menu screen of the Textris game.
  * <p>

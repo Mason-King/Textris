@@ -14,6 +14,8 @@
 
 package com.textris.model;
 
+import com.textris.media.Block;
+import com.textris.ui.GameWindow;
 import com.textris.ui.InputHandler;
 
 import java.util.ArrayList;
@@ -24,7 +26,11 @@ public class GameLoop
     private GameBoard board;
     private Dictionary dict;
     private LetterBlock current;
+    private Block fallingBlock;
     private InputHandler inputHandler;
+    private ScoreHandler scorer;
+
+    private boolean gameOn;
 
     /**
      * Creates and manages the different aspects of the game in relation to one another
@@ -32,14 +38,12 @@ public class GameLoop
      * @param board the actual grid of cells
      * @param dictionary the instance of the dictionary
      */
-    public GameLoop() {
-        // TODO: initialize fields
-        
-        // !! TESTING !!
+    public GameLoop() 
+    {
         dict = new Dictionary();
         board = new GameBoard();
-        
-        //this.findWords();
+        inputHandler = new InputHandler(GameWindow.getScene(), board);
+        scorer = new ScoreHandler();
     }
 
     /**
@@ -48,6 +52,7 @@ public class GameLoop
     public void generateBlock() 
     {
         current = new LetterBlock();
+        fallingBlock = new Block(current.getLetter());
     }
 
     
@@ -58,7 +63,7 @@ public class GameLoop
     {
         board.getStartingCell().setBlock(current);
         inputHandler.setActiveCell(board.getStartingCell());
-        inputHandler.setActiveBlock(current);
+        inputHandler.setActiveBlock(current, fallingBlock);
 
 
     }
@@ -69,7 +74,13 @@ public class GameLoop
      */
     public void setBlock() 
     {
-        // TODO: leave block in place, check grid for words
+        if (!inputHandler.getActiveCell().canFall())
+        {
+            // TODO: stop inputHandler from trying to move the cell
+            scorer.addScore(1);
+            findWords();
+            board.layThemToRest();
+        }
     }
 
     /**
@@ -97,21 +108,12 @@ public class GameLoop
     }
 
     /**
-     * accessing for score field
+     * Access for game state
      *
-     * @return copy of score variable
+     * @return if the game is running
      */
-    public int getScore() {
-        // TODO: return copy of score
-        return 0;
-    }
-
-    /**
-     * Adds a value to the current score
-     *
-     * @param bonus as the addition to the score
-     */
-    public void addToScore(int bonus) {
-        // TODO: add bonus to score
+    public boolean getGameOn() 
+    {
+        return gameOn;
     }
 }
