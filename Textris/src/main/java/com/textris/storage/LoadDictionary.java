@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Manages loading the dictionary into memory and performing searches
@@ -22,14 +21,14 @@ public class LoadDictionary {
     private static int listSize = 0;
     
     /**
-     * Loads word list file Twordlist_curated.txt into memory for the duration of the game.
+     * Loads word list file Twordlist.txt into memory for the duration of the game.
      * 
      * @throws IOException
      */
     public static void load() throws java.io.IOException {
         ArrayList<String> wordsTemp = new ArrayList<>();
         
-        InputStream inFile = LoadDictionary.class.getResourceAsStream("/Twordlist_curated.txt");
+        InputStream inFile = LoadDictionary.class.getResourceAsStream("/Twordlist.txt");
         BufferedReader readFile = new BufferedReader(new java.io.InputStreamReader(inFile));
         
         // Load in each line of word list into temporary ArrayList
@@ -46,8 +45,6 @@ public class LoadDictionary {
       
         readFile.close();
         inFile.close();
-        
-        Arrays.sort(words);
         
         System.out.println("Dictionary loaded.\n");
         System.out.println("Dictionary size: " + listSize + " words\n");
