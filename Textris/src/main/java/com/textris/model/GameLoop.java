@@ -1,5 +1,3 @@
-package com.textris.model;
-
 /**
  * Handles the state of the game
  *
@@ -10,18 +8,23 @@ package com.textris.model;
  * Collaborators:
  * - Game Board
  * - Dictionary
+ * 
+ * @author Cruz Shafer
  */
+
+package com.textris.model;
+
+import com.textris.ui.InputHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameLoop {
-
-    // Create a new gameboard of the correct size
+public class GameLoop 
+{
     private GameBoard board;
     private Dictionary dict;
     private LetterBlock current;
-    private int score;
+    private InputHandler inputHandler;
 
     /**
      * Creates and manages the different aspects of the game in relation to one another
@@ -38,28 +41,35 @@ public class GameLoop {
         
         //this.findWords();
     }
+
+    /**
+     * Generates the current block to be dropped
+     */
+    public void generateBlock() 
+    {
+        current = new LetterBlock();
+    }
+
     
     /**
      * Starts dropping the current block from the top left
      */
-    public void dropBlock() {
-        // TODO: implement block-dropping logic
+    public void dropBlock() 
+    {
+        board.getStartingCell().setBlock(current);
+        inputHandler.setActiveCell(board.getStartingCell());
+        inputHandler.setActiveBlock(current);
+
+
     }
 
     /**
      * Sets a block in place once it reaches the bottom 
      * of the grid or another block
      */
-    public void setBlock() {
+    public void setBlock() 
+    {
         // TODO: leave block in place, check grid for words
-    }
-
-    /**
-     * Allows the rest of the blocks to fall to the bottom after deleting some
-     */
-    public void fallingBlocks() {
-        // TODO: allow all blocks already on board to fall down
-        // so that they rest at the bottom (or on top of another block)
     }
 
     /**

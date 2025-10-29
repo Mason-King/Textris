@@ -12,20 +12,17 @@
 
 package com.textris.storage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.util.Map;
 
 public class LetterWeights 
 {
     // file of cumulative weighted regions from 0 to 9999
-    private static final String fileName = "/weightsCumulative.txt";
+    private static final String fileName = "/com/textris/storage/weightsCumulative.txt";
 
     private static TreeMap<Integer, Character> weights = new TreeMap<>();
-
-    private final int upperBound = 10000;
 
     static 
     {
@@ -46,27 +43,27 @@ public class LetterWeights
      */
     public static void readFile(String fileName) 
     {
-        File weightsFile = new File(fileName);
-
-        try (Scanner reader = new Scanner(weightsFile))
+        try (InputStream input = LetterWeights.class.getResourceAsStream(fileName))
         {
-            char currentLetter = 'a';
-
-            while (reader.hasNextLine())
+            try (Scanner reader = new Scanner(input))
             {
-                String data = reader.nextLine();
-                int weight = Integer.parseInt(data);
+                char currentLetter = 'a';
 
-                weights.put(weight, currentLetter);
-                currentLetter++;
-            }
+                while (reader.hasNextLine())
+                {
+                    String data = reader.nextLine();
+                    int weight = Integer.parseInt(data);
+
+                    weights.put(weight, currentLetter);
+                    currentLetter++;
+                }
+            } 
         } 
-        catch (FileNotFoundException exception)
+        catch (IOException exception)
         {
             System.out.println("LetterWeights file could not be found.");
             exception.printStackTrace();
         }
-        
     }
 
      /**
@@ -89,5 +86,13 @@ public class LetterWeights
     public static int getUpperBound() 
     {
         return 10000;
+    }
+
+
+
+
+    public static void main(String[] args)
+    {
+        
     }
 }
