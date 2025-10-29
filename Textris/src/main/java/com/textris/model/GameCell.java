@@ -95,8 +95,9 @@ public class GameCell
     public boolean canFall() 
     {
         boolean canFall = false;
-        
-        if (this.down.isEmpty() || this.down == null)
+
+        if (this.down == null) return canFall;
+        if (this.down.isEmpty())
         {
             canFall = true;
         }

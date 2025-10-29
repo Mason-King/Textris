@@ -13,6 +13,7 @@
 package com.textris.ui;
 
 import com.textris.media.Block;
+import com.textris.model.Direction;
 import com.textris.model.GameBoard;
 import com.textris.model.GameCell;
 import com.textris.model.LetterBlock;
@@ -77,9 +78,8 @@ public class InputHandler
      *
      * @param scene the JavaFX scene to attach listeners to
      */
-    private void initializeKeyListeners(Scene scene) 
-    {
-        scene.setOnKeyPressed(event -> 
+    private void initializeKeyListeners(Scene scene) {
+        scene.setOnKeyPressed(event ->
         {
             if (currentBlock == null) {
                 return;
@@ -89,13 +89,13 @@ public class InputHandler
 
             switch (key) {
                 case LEFT:
-                    moveCurrentLeft();
+                    handleMove(Direction.LEFT);
                     break;
                 case RIGHT:
-                    moveCurrentRight();
+                    handleMove(Direction.RIGHT);
                     break;
                 case DOWN:
-                    moveCurrentDown();
+                    handleMove(Direction.DOWN);
                     break;
                 default:
                     // Ignore other keys
@@ -104,53 +104,26 @@ public class InputHandler
         });
     }
 
-    
-    /**
-     * Uses GameBoard and Scene to move the current active LetterBlock left.
-     */
-    private void moveCurrentLeft()
-    {
-        currentCell.moveLeft();
-        currentCell = currentCell.getLeft();
-        
+     /**
+      * Attempts to move the active block in the specified direction.
+      *
+      * <p>Valid directions are {@code "LEFT"}, {@code "RIGHT"}, and {@code "DOWN"}.</p>
+      *
+      * @param direction the direction to move the block
+      */
+     private void handleMove(Direction direction) {
+         //If the block can move in intended direction, If its against other blocks and cant move down no more moving!
+         if (board.canMove(currentBlock, direction) && board.canMove(currentBlock, Direction.DOWN)) {
+             board.move(currentBlock, direction);
+             updateActiveCell(currentBlock);
+         }
+     }
 
+    public void updateActiveCell(LetterBlock block) {
+        if (block != null) {
+            this.currentCell = board.getCell(block.getCol(), block.getRow());
+        } else {
+            this.currentCell = null;
+        }
     }
-    
-
-    /**
-     * Uses GameBoard and Scene to move the current active LetterBlock right.
-     */
-    private void moveCurrentRight()
-    {
-        currentCell.moveRight();
-        currentCell = currentCell.getRight();
-    }
-
-
-    /**
-     * Uses GameBoard and Scene to move the current active LetterBlock down.
-     */
-    private void moveCurrentDown()
-    {
-        currentCell.moveDown();
-        currentCell = currentCell.getDown();
-    }
-
-// Possibly use JAVAFX to move the physical rectangle (block) created in media.Block and defined (size) in ui.GameWindow !!!!!!
-
-
-
-
-    // /**
-    //  * Attempts to move the active block in the specified direction.
-    //  *
-    //  * <p>Valid directions are {@code "LEFT"}, {@code "RIGHT"}, and {@code "DOWN"}.</p>
-    //  *
-    //  * @param direction the direction to move the block
-    //  */
-    // private void handleMove(String direction) {
-    //     if (gameBoard.canMove(activeBlock, direction)) {
-    //         gameBoard.move(activeBlock, direction);
-    //     }
-    // }
 }

@@ -20,7 +20,7 @@ import java.util.TreeMap;
 public class LetterWeights 
 {
     // file of cumulative weighted regions from 0 to 9999
-    private static final String fileName = "/com/textris/storage/weightsCumulative.txt";
+    private static final String fileName = "/weightsCumulative.txt";
 
     private static TreeMap<Integer, Character> weights = new TreeMap<>();
 
@@ -32,8 +32,9 @@ public class LetterWeights
 
     // Private construction to prevent any instances
     private LetterWeights() 
-    {  
-        
+    {
+//        So what iv done:
+//        - When you create a new LetterBlock() it creates the `Block` so were not doing two things there to avoid confusion, and stores it within the letterblock
     }
 
     /**

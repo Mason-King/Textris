@@ -15,19 +15,22 @@ public class Main {
     public static void main(String[] args) throws InterruptedException{
         System.out.println("Launching textris game");
 
-//         GameBoard gameBoard = new GameBoard();
-//         Dictionary dictionary = new Dictionary();
-//         GameLoop gameLoop = new GameLoop(gameBoard, dictionary);
-
-//         while (!gameLoop.isGameOver()) {
-//             gameLoop.tick();
-//             Thread.sleep(500);
-//         }
-
         Application.launch(MainMenuUI.class); // Launch JavaFX UI
 
-        System.out.println("Exiting textris game.");
-   
+        //None of this is actualy ran bc javafx hogs main thread...
+//        GameBoard gameBoard = new GameBoard();
+//        Dictionary dictionary = new Dictionary();
+//        GameLoop gameLoop = new GameLoop(gameBoard, dictionary);
+//
+//        System.out.println(gameLoop.isGameOver());
+//        while (!gameLoop.isGameOver()) {
+//            System.out.println("Running loop!");
+//            gameLoop.tick();
+//            Thread.sleep(500);
+//        }
+//
+//        System.out.println("Exiting textris game.");
+//
         // Swing must run oin the EDT, else can lead to future issues.
         /*SwingUtilities.invokeLater(() -> {
             new GameWindow().setVisible(true);
@@ -43,9 +46,7 @@ public class Main {
         else {
             System.out.println("Not found");
         }*/
-        
-        GameLoop loop = new GameLoop();
-        
+
         System.out.println("Exiting textris game.");
     }
     

@@ -17,6 +17,13 @@ package com.textris.model;
 import java.util.List;
 
 import com.textris.model.GameCell;
+import com.textris.ui.GameWindow;
+import com.textris.ui.InputHandler;
+import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +35,12 @@ public class GameBoard
     // Create a 2D Array to store the grid in
     private final GameCell[][] grid;
 
+    private InputHandler inputHandler;
+
      /**
      * Creates an empty GameBoard by interconnecting GameCells.
      */
-    public GameBoard() 
+    public GameBoard()
     {
         this.cols = 5;
         this.rows = 8;
@@ -96,23 +105,37 @@ public class GameBoard
         int row = block.getRow();
         int col = block.getCol();
 
-        grid[row][col].clear();
+        // Clear the current cell
+        grid[col][row].clear();
+
+        // Calculate new row/col based on direction
+        int newRow = row;
+        int newCol = col;
 
         switch (dir) {
-            case DOWN:
-                row += 1;
-                break;
-            case LEFT:
-                col -= 1;
-                break;
-            case RIGHT:
-                col += 1;
-                break;
+            case DOWN -> newRow++;
+            case LEFT -> newCol--;
+            case RIGHT -> newCol++;
         }
 
-        grid[row][col].setBlock(block);
-        block.setRow(row);
-        block.setCol(col);
+        // Place the block in the new cell
+        grid[newCol][newRow].setBlock(block);
+        block.setRow(newRow);
+        block.setCol(newCol);
+
+        inputHandler.updateActiveCell(block);
+
+        //Define final since lambda
+        final int fx = newRow, fy = newCol;
+        final LetterBlock fb = block;
+
+        // Update the visual node in the UI
+        Platform.runLater(() -> {
+            var node = fb.getBlock().getBlock();
+            node.setLayoutX(fb.getCol() * GameWindow.SIZE); // col → X
+            node.setLayoutY(fb.getRow() * GameWindow.SIZE); // row → Y
+        });
+
     }
 
     public boolean canMove(LetterBlock block, Direction dir) {
@@ -122,13 +145,13 @@ public class GameBoard
         switch (dir) {
             case DOWN:
                 if (row == rows - 1) return false;
-                return grid[row + 1][col].isEmpty();
+                return grid[col][row + 1].isEmpty();
             case LEFT:
                 if (col == 0) return false;
-                return grid[row][col - 1].isEmpty();
+                return grid[col - 1][row].isEmpty();
             case RIGHT:
                 if (col == cols - 1) return false;
-                return grid[row][col + 1].isEmpty();
+                return grid[col + 1][row].isEmpty();
             default:
                 return false;
         }
@@ -166,61 +189,6 @@ public class GameBoard
     {
         return grid[x][y];
     }
-
-
-    /**
-     * Returns the cell to place blocks in
-     *
-     * @return the cell itself
-     */
-    public GameCell getStartingCell()
-    {
-        return grid[cols/2][0];
-    }
-
-
-    /**
-     * Moves a specific block down
-     *
-     * @param x column of block (starting @ 0)
-     * @param y row of block (starting @ 0)
-     */
-    public void moveBlockDown(int x, int y) 
-    {
-        GameCell current = grid[x][y];
-        
-        if (!current.isEmpty() && current.canFall())
-        {
-            current.moveDown();
-        }
-    }
-
-
-    /**
-     * Lets all blocks that are floating fall down until they can't anymore.
-     */
-    public void layThemToRest()
-    {
-        for (int i = cols - 1; i >= 0; i--)
-        {
-            for (int j = rows - 2; j >= 0; j--)
-            {
-                GameCell current = grid[i][j];
-
-                while (current.canFall())
-                {
-                    moveBlockDown(i,j);
-                    current = grid[i][j+1];
-                    j++;
-                    if (j > rows-2)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
 
      /**
      * Scans horizontal and vertical rows containing the last placed letter block for
@@ -315,7 +283,7 @@ public class GameBoard
             return false;
         }
 
-        GameCell cell = grid[row][col];
+        GameCell cell = grid[col][row];
 
         if(!cell.isEmpty()) {
             return false;
@@ -326,35 +294,50 @@ public class GameBoard
     }
 
     public void applyGravity() {
-        for(int col = 0; col < this.cols; col++) {
-            for (int row = 0; row < this.rows; row++) {
-                GameCell cur = grid[row][col];
-                if (!cur.isEmpty()) {
-                    int dropRow = row;
-                    while (dropRow + 1 < rows && grid[dropRow+1][col].isEmpty()) {
-                        dropRow++;
-                    }
-                    if (dropRow != row) {
-                        LetterBlock block = cur.getBlock();
-                        cur.clear();
-                        grid[dropRow][col].setBlock(block);
-                        block.setRow(dropRow);
+        Platform.runLater(() -> {
+            for (int col = 0; col < this.cols; col++) {
+                for (int row = this.rows - 2; row >= 0; row--) {
+                    GameCell cur = grid[col][row];
+                    if (!cur.isEmpty()) {
+                        int dropRow = row;
+                        while (dropRow + 1 < rows && grid[col][dropRow + 1].isEmpty()) {
+                            dropRow++;
+                        }
+                        if (dropRow != row) {
+                            LetterBlock block = cur.getBlock();
+                            cur.clear();
+                            grid[col][dropRow].setBlock(block);
+                            block.setRow(dropRow);
+
+                            // Instant move
+                            block.getBlock().getBlock().setLayoutY(dropRow * GameWindow.SIZE);
+                        }
                     }
                 }
             }
-        }
+        });
+    }
+
+    public void setInputHandler(InputHandler inputHandler) {
+        this.inputHandler = inputHandler;
     }
 
     public void printBoard() {
         System.out.println("---- BOARD ----");
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                GameCell cell = grid[i][j];
-                if (cell.isEmpty()) {
+                GameCell cell = grid[j][i];
+                if (cell.isEmpty() || cell.getBlock() == null) {
                     System.out.print("* ");
                 } else {
-                    System.out.print(cell.getBlock().getLetter() + " ");
+                    try {
+                        System.out.print(cell.getBlock().getLetter() + " ");
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.print("? "); // placeholder for debugging
+                        e.printStackTrace();
+                    }
                 }
+
             }
             System.out.println();
         }

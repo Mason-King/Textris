@@ -24,7 +24,7 @@ import java.util.List;
 public class GameLoop 
 {
     private GameBoard board;
-    private Dictionary dict;
+    private Dictionary dictionary;
     private LetterBlock current;
     private LetterBlock previous;
     private int score;
@@ -42,14 +42,18 @@ public class GameLoop
      * @param board the actual grid of cells
      * @param dictionary the instance of the dictionary
      */
-    public GameLoop(GameBoard board, Dictionary dictionary) {
+    public GameLoop(InputHandler inputHandler, GameBoard board, Dictionary dictionary) {
+        //Init state variables
         this.board = board;
         this.dictionary = dictionary;
         this.previous = null;
         this.score = 0;
+        this.gameOver = false;
       
-        inputHandler = new InputHandler(GameWindow.getScene(), board);
-        scorer = new ScoreHandler();
+        this.inputHandler = inputHandler;
+        this.scorer = new ScoreHandler();
+
+        this.board.setInputHandler(inputHandler);
     }
 
     /**
@@ -65,18 +69,19 @@ public class GameLoop
 
         if (board.canMove(current, Direction.DOWN)) {
             board.move(current, Direction.DOWN);
+            inputHandler.updateActiveCell(current);
         } else {
             setBlock();
+            dropBlock();
         }
 
-        board.printBoard();
+//        System.out.println("Tick: row=" + current.getRow() + ", col=" + current.getCol());
     }
 
     /**
      * Generates the current block to be dropped
      */
     public void dropBlock() {
-        // TODO: implement block-dropping logic - Need to check can drop on board
         current = new LetterBlock();
 
         //Always spawn top center
@@ -84,6 +89,11 @@ public class GameLoop
 
         current.setRow(spawnRow);
         current.setCol(spawnCol);
+
+        GameWindow.addBlock(current);
+
+        inputHandler.setActiveBlock(current, current.getBlock());
+        inputHandler.setActiveCell(board.getCell(spawnCol, spawnRow));
 
         //placeBlock returns a boolean
         if (!board.placeBlock(current)) {
@@ -94,41 +104,42 @@ public class GameLoop
         }
     }
 
-    
     /**
      * Starts dropping the current block from the top left
      */
     public void setBlock() {
+        findWords();
+
         previous = current;
         current = null;
-        findWords();
-        fallingBlocks();
-    public void dropBlock() 
-    {
-        board.getStartingCell().setBlock(current);
-        inputHandler.setActiveCell(board.getStartingCell());
-        inputHandler.setActiveBlock(current, fallingBlock);
+
+        applyGravity();
 
 
-    }
-
-    /**
-     * Sets a block in place once it reaches the bottom 
-     * of the grid or another block
-     */
-    public void fallingBlocks() {
-        // TODO: allow all blocks already on board to fall down
-        // so that they rest at the bottom (or on top of another block)
-        board.applyGravity();
-    public void setBlock() 
-    {
         if (!inputHandler.getActiveCell().canFall())
         {
             // TODO: stop inputHandler from trying to move the cell
             scorer.addScore(1);
             findWords();
-            board.layThemToRest();
         }
+    }
+//    public void dropBlock()
+//    {
+//        board.getStartingCell().setBlock(current);
+//        inputHandler.setActiveCell(board.getStartingCell());
+//        inputHandler.setActiveBlock(current, fallingBlock);
+//
+//
+//    }
+
+    /**
+     * Sets a block in place once it reaches the bottom 
+     * of the grid or another block
+     */
+    public void applyGravity() {
+        // TODO: allow all blocks already on board to fall down
+        // so that they rest at the bottom (or on top of another block)
+        board.applyGravity();
     }
 
     /**
@@ -136,20 +147,52 @@ public class GameLoop
      * and searches for words in them
      */
     public void findWords() {
-        // TODO: use GameBoard.detectWords() and Dictionary.isValid() to find words
-        // in the grid; use GameCell.clear() to delete, drop remaining blocks
-        // and call addToScore(word.length) if found
-        var words = board.detectWords();
+        if(previous == null) return;
 
-        for (String word : words) {
+        GameCell cell = board.getCell(previous.getCol(), previous.getRow());
+        var strings = board.detectWords(cell);
+
+        for (String word : strings) {
             if(dictionary.isValid(word)) {
-                //TODO: Clear word from board
-                //Add to score
-                addToScore(0);
+                System.out.println("Found word: " + word);
+                //Remove word!
+                removeWord(word, cell);
+                addToScore(word.length());
             }
         }
-        fallingBlocks();
     }
+
+    private void removeWord(String word, GameCell startCell) {
+        // Horizontal
+        GameCell left = startCell;
+        while (left.getLeft() != null && !left.getLeft().isEmpty()) {
+            left = left.getLeft();
+        }
+
+        GameCell cur = left;
+        for (int i = 0; i < word.length(); i++) {
+            if (cur == null) break;
+            cur.clear();
+            cur = cur.getRight();
+        }
+
+        // Vertical
+        GameCell top = startCell;
+        while (top.getUp() != null && !top.getUp().isEmpty()) {
+            top = top.getUp();
+        }
+
+        cur = top;
+        for (int i = 0; i < word.length(); i++) {
+            if (cur == null) break;
+            cur.clear();
+            cur = cur.getDown();
+        }
+
+        // Let blocks above fall down after clearing
+        board.applyGravity();
+    }
+
 
     /**
      * accessing for score field
@@ -192,5 +235,19 @@ public class GameLoop
         this.current = null;
         this.previous = null;
         this.gameOver = false;
+    }
+
+    public void start() {
+        new Thread(() -> {
+            while (!this.isGameOver()) {
+                this.tick();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+//                board.printBoard();
+            }
+        }).start();
     }
 }

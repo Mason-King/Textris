@@ -1,5 +1,8 @@
 package com.textris.ui;
 
+import com.textris.model.Dictionary;
+import com.textris.model.GameBoard;
+import com.textris.model.GameLoop;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -93,7 +96,17 @@ public class MainMenuUI extends Application {
         setButtonStyle(exitButton, "#F44336"); // Red
 
         // Set button event handlers
-        startButton.setOnAction(e -> GameWindow.show(primaryStage));
+        startButton.setOnAction(e -> {
+            GameWindow.show(primaryStage);
+
+            //Initialize the game loop
+            GameBoard gameBoard = new GameBoard();
+            InputHandler inputHandler = new InputHandler(GameWindow.getScene(), gameBoard);
+            Dictionary dictionary = new Dictionary();
+            GameLoop gameLoop = new GameLoop(inputHandler, gameBoard, dictionary);
+            gameLoop.start();
+
+        });
         scoreboardButton.setOnAction(e -> ScoreboardUI.show(primaryStage));
         exitButton.setOnAction(e -> stage.close());
 

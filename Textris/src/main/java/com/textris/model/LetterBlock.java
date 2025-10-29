@@ -12,6 +12,7 @@
 
 package com.textris.model;
 
+import com.textris.media.Block;
 import com.textris.storage.LetterWeights;
 import java.util.Random;
 
@@ -20,6 +21,7 @@ public class LetterBlock
     private final char letter;
     private int row;
     private int col;
+    private Block block;
 
     /**
      * Generates a letter based on the weights of letters carried in LetterWeights. Only called on construction.
@@ -31,6 +33,8 @@ public class LetterBlock
         int randomInt = generator.nextInt(LetterWeights.getUpperBound());
 
         letter = LetterWeights.getLetter(randomInt);
+
+        this.block = new Block(letter);
     }
     
     /**
@@ -66,5 +70,9 @@ public class LetterBlock
 
     public void setCol(int col) {
         this.col = col;
+    }
+
+    public Block getBlock() {
+        return this.block;
     }
 }
