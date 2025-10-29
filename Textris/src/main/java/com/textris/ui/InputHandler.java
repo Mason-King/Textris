@@ -1,85 +1,101 @@
+/**
+ * This class takes user input the move a LetterBlock on the GameBoard.
+ *
+ * Responsibilities:
+ * - Read user input using arrow keys
+ * - Call GameBoard methods based on the key pressed
+ *
+ * Collaborators:
+ * - GameBoard
+ * - LetterBlock
+ */
+
 package com.textris.ui;
 
+import com.textris.media.Block;
 import com.textris.model.GameBoard;
+import com.textris.model.GameCell;
 import com.textris.model.LetterBlock;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
-/**
- * Handles keyboard input for controlling the falling {@link LetterBlock}
- * in the Tetris-like game.
- *
- * <p>This class listens for arrow key presses and moves the active block
- * left, right, or down if allowed by the {@link GameBoard} rules.</p>
- *
- * <h2>Usage Example:</h2>
- * <pre>{@code
- * InputHandler inputHandler = new InputHandler(scene, gameBoard);
- * inputHandler.setActiveBlock(currentBlock);
- * }</pre>
- *
- * <p>When a new block spawns, call {@link #setActiveBlock(LetterBlock)}
- * so the player can control it.</p>
- */
-public class InputHandler {
-
-    /** Reference to the game's board, which handles block movement. */
-    private final GameBoard gameBoard;
-
-    /** The currently active falling block controlled by the player. */
-    private LetterBlock activeBlock;
+public class InputHandler 
+{
+    private final GameBoard board;
+    private GameCell currentCell;
+    private LetterBlock currentBlock;
+    private Block currentBlockSprite;
 
     /**
-     * Creates a new {@code InputHandler} that listens for keyboard input
-     * on the given JavaFX {@link Scene}.
+     * Creates a new InputHandler that listens for keyboard input.
      *
      * @param scene the JavaFX scene to attach key listeners to
-     * @param gameBoard the {@link GameBoard} used to control movement and collision
+     * @param gameBoard the GameBoard used to control movement and collision checks
      */
-    public InputHandler(Scene scene, GameBoard gameBoard) {
-        this.gameBoard = gameBoard;
+    public InputHandler(Scene scene, GameBoard gameBoard)
+    {
+        this.board = gameBoard;
         initializeKeyListeners(scene);
+    }
+
+    /**
+     * Sets the GameCell that the currently active block starts in.
+     *
+     * @param cell the starting cell
+     */
+    public void setActiveCell(GameCell cell) 
+    {
+        this.currentCell = cell;
+    }
+
+    /**
+     * Returns the current cell where the active block resides.
+     *
+     * @return the active cell
+     */
+    public GameCell getActiveCell() 
+    {
+        return this.currentCell;
     }
 
     /**
      * Sets the currently active block that responds to player input.
      *
-     * <p>This should be updated whenever a new {@link LetterBlock} spawns
-     * or when the current one locks into place.</p>
-     *
      * @param block the currently falling block
      */
-    public void setActiveBlock(LetterBlock block) {
-        this.activeBlock = block;
+    public void setActiveBlock(LetterBlock block, Block sprite) 
+    {
+        this.currentBlock = block;
+        this.currentBlockSprite = sprite;
     }
 
     /**
      * Initializes key listeners on the given scene.
-     * <ul>
-     *     <li>⬅️ Left Arrow — move block left</li>
-     *     <li>➡️ Right Arrow — move block right</li>
-     *     <li>⬇️ Down Arrow — move block down</li>
-     * </ul>
+     *   Left Arrow — move block left
+     *   Right Arrow — move block right
+     *   Down Arrow — move block down
      *
      * @param scene the JavaFX scene to attach listeners to
      */
-    private void initializeKeyListeners(Scene scene) {
-        scene.setOnKeyPressed(event -> {
-            if (activeBlock == null) {
-                return; // No active block to control
+    private void initializeKeyListeners(Scene scene) 
+    {
+        scene.setOnKeyPressed(event -> 
+        {
+            if (currentBlock == null) {
+                return;
             }
 
             KeyCode key = event.getCode();
 
             switch (key) {
                 case LEFT:
-                    handleMove("LEFT");
+                    moveCurrentLeft();
                     break;
                 case RIGHT:
-                    handleMove("RIGHT");
+                    moveCurrentRight();
                     break;
                 case DOWN:
-                    handleMove("DOWN");
+                    moveCurrentDown();
                     break;
                 default:
                     // Ignore other keys
@@ -88,16 +104,53 @@ public class InputHandler {
         });
     }
 
+    
     /**
-     * Attempts to move the active block in the specified direction.
-     *
-     * <p>Valid directions are {@code "LEFT"}, {@code "RIGHT"}, and {@code "DOWN"}.</p>
-     *
-     * @param direction the direction to move the block
+     * Uses GameBoard and Scene to move the current active LetterBlock left.
      */
-    private void handleMove(String direction) {
-        if (gameBoard.canMove(activeBlock, direction)) {
-            gameBoard.move(activeBlock, direction);
-        }
+    private void moveCurrentLeft()
+    {
+        currentCell.moveLeft();
+        currentCell = currentCell.getLeft();
+        
+
     }
+    
+
+    /**
+     * Uses GameBoard and Scene to move the current active LetterBlock right.
+     */
+    private void moveCurrentRight()
+    {
+        currentCell.moveRight();
+        currentCell = currentCell.getRight();
+    }
+
+
+    /**
+     * Uses GameBoard and Scene to move the current active LetterBlock down.
+     */
+    private void moveCurrentDown()
+    {
+        currentCell.moveDown();
+        currentCell = currentCell.getDown();
+    }
+
+// Possibly use JAVAFX to move the physical rectangle (block) created in media.Block and defined (size) in ui.GameWindow !!!!!!
+
+
+
+
+    // /**
+    //  * Attempts to move the active block in the specified direction.
+    //  *
+    //  * <p>Valid directions are {@code "LEFT"}, {@code "RIGHT"}, and {@code "DOWN"}.</p>
+    //  *
+    //  * @param direction the direction to move the block
+    //  */
+    // private void handleMove(String direction) {
+    //     if (gameBoard.canMove(activeBlock, direction)) {
+    //         gameBoard.move(activeBlock, direction);
+    //     }
+    // }
 }

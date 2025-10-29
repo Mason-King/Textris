@@ -1,22 +1,50 @@
 package com.textris.ui;
 
-import com.textris.model.GameLoop;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import javax.swing.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import com.textris.media.Block;
 
-public class GameWindow {
-    private JPanel rootPanel;
-    private JLabel mainLabel;
-    private JButton startGameBtn;
+public class GameWindow
+{
+    public static final int SIZE = 60;
+    public static int XMAX = SIZE * 5;
+    public static int YMAX = SIZE * 8;
+    public static int[][] MESH = new int[XMAX/SIZE][YMAX/SIZE];
+    private static Pane pane = new Pane();
 
-    //Initialize the game loop somewhere here?
-//    public void initLoop() {
-//        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-//        executor.scheduleAtFixedRate(() -> {
-//            //Need instance of game loop here
-//        }, 0, 500, TimeUnit.MILLISECONDS);
-//    }
+    private static Scene scene;
+
+    private static Block nextBlock = new Block('x');
+
+    public static void show(Stage primaryStage)
+    {
+        Line line = new Line(XMAX, 0, XMAX, YMAX);
+        line.setStroke(Color.WHITE);
+        pane.getChildren().add(line);
+
+        pane.getChildren().add(nextBlock.getBlock());
+
+
+        scene = new Scene(pane, XMAX + 180, YMAX);
+        pane.setStyle("-fx-background-color: black;");
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Textris - Game Window");
+        primaryStage.show();
+    }
+
+    public static Scene getScene()
+    {
+        return scene;
+    }
+
+    public static Block getActiveBlock()
+    {
+        return nextBlock;
+    }
 }

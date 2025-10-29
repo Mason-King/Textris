@@ -14,8 +14,6 @@
  */
 package com.textris.model;
 
-import com.textris.model.LetterBlock;
-
 public class GameCell 
 {
     
@@ -98,7 +96,7 @@ public class GameCell
     {
         boolean canFall = false;
         
-        if (this.down.getBlock() == this.empty)
+        if (this.down.isEmpty() || this.down == null)
         {
             canFall = true;
         }
@@ -207,7 +205,7 @@ public class GameCell
      */
     public void moveLeft() 
     {
-        if (left.getBlock() == this.empty)
+        if (!isEmpty() && left.isEmpty())
         {
             left.setBlock(this.block);
             this.block = this.empty;
@@ -219,7 +217,7 @@ public class GameCell
      */
     public void moveRight() 
     {
-        if (right.getBlock() == this.empty)
+        if (!isEmpty() && right.isEmpty())
         {
             right.setBlock(this.block);
             this.block = this.empty;
@@ -231,7 +229,7 @@ public class GameCell
      */
     public void moveDown() 
     {
-        if (down.getBlock() == this.empty)
+        if (!isEmpty() && canFall())
         {
             down.setBlock(this.block);
             this.block = this.empty;

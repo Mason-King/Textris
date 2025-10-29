@@ -81,7 +81,7 @@ public class ScoreboardUI {
         // Table Section: Scoreboard
         // -------------------------
         TableView<ScoreEntry> table = new TableView<>();
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // Columns fill table
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN); // Columns fill table
 
         // Drop shadow for table
         DropShadow tableShadow = new DropShadow();

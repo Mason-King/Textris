@@ -1,5 +1,3 @@
-package com.textris.model;
-
 /**
  * Handles the state of the game
  *
@@ -10,14 +8,21 @@ package com.textris.model;
  * Collaborators:
  * - Game Board
  * - Dictionary
+ * 
+ * @author Cruz Shafer
  */
+
+package com.textris.model;
+
+import com.textris.media.Block;
+import com.textris.ui.GameWindow;
+import com.textris.ui.InputHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameLoop {
-
-    // Create a new gameboard of the correct size
+public class GameLoop 
+{
     private GameBoard board;
     private Dictionary dict;
     private LetterBlock current;
@@ -25,6 +30,11 @@ public class GameLoop {
     private int score;
     private boolean gameOver;
 
+    private Block fallingBlock;
+    private InputHandler inputHandler;
+    private ScoreHandler scorer;
+
+    private boolean gameOn;
 
     /**
      * Creates and manages the different aspects of the game in relation to one another
@@ -37,6 +47,9 @@ public class GameLoop {
         this.dictionary = dictionary;
         this.previous = null;
         this.score = 0;
+      
+        inputHandler = new InputHandler(GameWindow.getScene(), board);
+        scorer = new ScoreHandler();
     }
 
     /**
@@ -60,7 +73,7 @@ public class GameLoop {
     }
 
     /**
-     * Starts dropping the current block from the top left
+     * Generates the current block to be dropped
      */
     public void dropBlock() {
         // TODO: implement block-dropping logic - Need to check can drop on board
@@ -81,24 +94,41 @@ public class GameLoop {
         }
     }
 
+    
     /**
-     * Sets a block in place once it reaches the bottom 
-     * of the grid or another block
+     * Starts dropping the current block from the top left
      */
     public void setBlock() {
         previous = current;
         current = null;
         findWords();
         fallingBlocks();
+    public void dropBlock() 
+    {
+        board.getStartingCell().setBlock(current);
+        inputHandler.setActiveCell(board.getStartingCell());
+        inputHandler.setActiveBlock(current, fallingBlock);
+
+
     }
 
     /**
-     * Allows the rest of the blocks to fall to the bottom after deleting some
+     * Sets a block in place once it reaches the bottom 
+     * of the grid or another block
      */
     public void fallingBlocks() {
         // TODO: allow all blocks already on board to fall down
         // so that they rest at the bottom (or on top of another block)
         board.applyGravity();
+    public void setBlock() 
+    {
+        if (!inputHandler.getActiveCell().canFall())
+        {
+            // TODO: stop inputHandler from trying to move the cell
+            scorer.addScore(1);
+            findWords();
+            board.layThemToRest();
+        }
     }
 
     /**
@@ -133,7 +163,7 @@ public class GameLoop {
     /**
      * Adds a value to the current score
      *
-     * @param bonus as the addition to the score
+     * @return if the game is running
      */
     public void addToScore(int bonus) {
         score += bonus;

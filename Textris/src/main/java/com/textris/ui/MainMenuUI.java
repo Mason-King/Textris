@@ -11,6 +11,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+// CHECK IF JAVAFX NEEDS TO BE BUNDLED WITH PROJECT
+
+
 /**
  * The {@code MainMenuUI} class represents the main menu screen of the Textris game.
  * <p>
@@ -90,7 +93,7 @@ public class MainMenuUI extends Application {
         setButtonStyle(exitButton, "#F44336"); // Red
 
         // Set button event handlers
-        startButton.setOnAction(e -> System.out.println("Game starting..."));
+        startButton.setOnAction(e -> GameWindow.show(primaryStage));
         scoreboardButton.setOnAction(e -> ScoreboardUI.show(primaryStage));
         exitButton.setOnAction(e -> stage.close());
 
@@ -176,7 +179,7 @@ public class MainMenuUI extends Application {
      *
      * @param args command-line arguments passed to the application
      */
-    public static void launchMenu(String[] args) {
+    public static void main(String[] args) {
         launch(args);
     }
 }
