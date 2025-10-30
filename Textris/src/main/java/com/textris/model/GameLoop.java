@@ -179,15 +179,6 @@ public class GameLoop
         board.applyGravity();
     }
 
-    private Direction opposite(Direction dir) {
-        return switch (dir) {
-            case UP -> Direction.DOWN;
-            case DOWN -> Direction.UP;
-            case LEFT -> Direction.RIGHT;
-            case RIGHT -> Direction.LEFT;
-        };
-    }
-
     /**
      * accessing for score field
      *
