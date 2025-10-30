@@ -47,7 +47,7 @@ public class Main {
             System.out.println("Not found");
         }*/
 
-        System.out.println("Exiting textris game...");
+        System.out.println("Exiting textris game.");
     }
     
     /*
