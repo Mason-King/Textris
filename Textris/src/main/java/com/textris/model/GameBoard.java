@@ -220,10 +220,10 @@ public class GameBoard
         }
         
         /* Vertical word finding */
-        // Aggregate all letters descending from new block to the bottom of the board
+        // Aggregate all letters descending from new block down to five blocks deep.
         curCell = newBlock;
         
-        while (curCell != null && curCell.isEmpty() == false)
+        for (int colDepth = 0; colDepth < 5 && curCell != null && curCell.isEmpty() == false; colDepth++)
         {
             colLetters.add(curCell.getBlock().getLetter());
             curCell = curCell.getDown();

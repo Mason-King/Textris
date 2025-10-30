@@ -11231,10 +11231,12 @@ oases
 oasis
 oast
 oasts
+oat
 oaten
 oater
 oath
 oaths
+oats
 oaty
 oaves
 obb
@@ -13869,10 +13871,13 @@ sably
 sabot
 sabs
 sabzi
+sack
+sacks
 sacra
 sacre
 sacro
 sacry
+sad
 sades
 sadh
 sadhe
@@ -14217,6 +14222,7 @@ secy
 sedat
 sedge
 sedgy
+see
 seech
 seeds
 seedy
