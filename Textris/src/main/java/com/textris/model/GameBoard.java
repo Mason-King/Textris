@@ -26,9 +26,11 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameBoard 
 {
+    private final Dictionary dictionary = new Dictionary();
     private final int cols;
     private final int rows; // add 1 row for checking if game should end (if any cell in row 8 is filled & the block is locked, then the game ends)
 
@@ -46,6 +48,24 @@ public class GameBoard
         this.rows = 8;
         grid = new GameCell[this.cols][this.rows];
         initializeGrid();
+    }
+    
+    private boolean isBoardBusy = false;
+
+    public boolean isBoardBusy() {
+        return isBoardBusy;
+    }
+    
+    public static class WordMatch {
+        public final String word;
+        public final GameCell startCell; // the cell containing the first letter of the matched substring
+        public final Direction dir;      // Direction.RIGHT for horizontal, Direction.DOWN for vertical
+
+        public WordMatch(String word, GameCell startCell, Direction dir) {
+            this.word = word;
+            this.startCell = startCell;
+            this.dir = dir;
+        }
     }
 
     /**
@@ -104,7 +124,6 @@ public class GameBoard
         inputHandler.updateActiveCell(block);
 
         //Define final since lambda
-        final int fx = newRow, fy = newCol;
         final LetterBlock fb = block;
 
         // Update the visual node in the UI
@@ -179,76 +198,76 @@ public class GameBoard
      * Scans horizontal and vertical rows containing the last placed letter block for
      * strings 3-5 letters long for referencing in Dictionary.
      * 
-     * @param newBlock, the most recently placed block on the game board
+     * @param startCell, the most recently placed block on the game board
      * @return ArrayList of strings containing possible words
      */
-    public List<String> detectWords(GameCell newBlock) 
-    {
-        List<Character> rowLetters = new ArrayList<>();
-        List<Character> colLetters = new ArrayList<>();
-        
-        // Left-right bounds for horizontal searching
-        GameCell leftCell = newBlock;
-        GameCell rightCell = newBlock;
-        
-        /* Horizontal word finding */
-        
-        // Finding the left boundry for cells with letters from newBlock:
-        // If the next left cell is not out of bounds and it is populated, go to it.
-        while (leftCell.getLeft() != null && leftCell.getLeft().isEmpty() == false)
-        {
-            leftCell = leftCell.getLeft();
+    public List<WordMatch> detectWords(GameCell startCell) {
+        List<WordMatch> matches = new ArrayList<>();
+        if (startCell == null || startCell.isEmpty()) return matches;
+
+        // --- HORIZONTAL: build contiguous sequence and a list of cells ---
+        // find leftmost cell in the contiguous run
+        GameCell left = startCell;
+        while (left.getLeft() != null && !left.getLeft().isEmpty()) left = left.getLeft();
+
+        // collect cells left->right
+        List<GameCell> horizCells = new ArrayList<>();
+        GameCell cur = left;
+        while (cur != null && !cur.isEmpty()) {
+            horizCells.add(cur);
+            cur = cur.getRight();
         }
 
-        // Finding the right boundry for cells with letters from newBlock:
-        // If the next right cell is not out of bounds and it is populated, go to it
-        while (rightCell.getRight() != null && rightCell.getRight().isEmpty() == false)
-        {
-            rightCell = rightCell.getRight();
-        }
-        
-        GameCell curCell = leftCell;
-        boolean atEnd = false;
-        
-        // Aggregate all letters within these bounds
-        while (atEnd == false)
-        {
-            if(curCell == rightCell) atEnd = true;
-            
-            rowLetters.add(curCell.getBlock().getLetter());
-            if(atEnd == false) curCell = curCell.getRight(); 
-        }
-        
-        /* Vertical word finding */
-        // Aggregate all letters descending from new block down to five blocks deep.
-        curCell = newBlock;
-        
-        for (int colDepth = 0; colDepth < 5 && curCell != null && curCell.isEmpty() == false; colDepth++)
-        {
-            colLetters.add(curCell.getBlock().getLetter());
-            curCell = curCell.getDown();
-        }
-        
-        List<String> strings = new ArrayList<>();
-        
-        // Concatenate character arrays of valid length into strings and pass into String ArrayList
-        int rSize = rowLetters.size(), cSize = colLetters.size();
-
-        if (rSize >= 3 && rSize <= 5) {
-            StringBuilder sb = new StringBuilder();
-            rowLetters.forEach(sb::append);
-            strings.add(sb.toString());
-        }
-        
-        if (cSize >= 3 && cSize <= 5) {
-            StringBuilder sb = new StringBuilder();
-            colLetters.forEach(sb::append);
-            strings.add(sb.toString());
+        // convert to letters string
+        int hLen = horizCells.size();
+        if (hLen >= 3) {
+            // for every substring length 3..5
+            for (int len = 3; len <= 5; len++) {
+                if (len > hLen) break;
+                // slide window over horizCells
+                for (int startIdx = 0; startIdx <= hLen - len; startIdx++) {
+                    StringBuilder sb = new StringBuilder(len);
+                    for (int k = 0; k < len; k++) sb.append(horizCells.get(startIdx + k).getBlock().getLetter());
+                    String candidate = sb.toString().toLowerCase();
+                    if (dictionary.isValid(candidate)) {
+                        // start cell for this substring:
+                        GameCell matchStartCell = horizCells.get(startIdx);
+                        matches.add(new WordMatch(candidate, matchStartCell, Direction.RIGHT));
+                    }
+                }
+            }
         }
 
-        return strings;
+        // --- VERTICAL: build contiguous sequence and a list of cells ---
+        GameCell top = startCell;
+        while (top.getUp() != null && !top.getUp().isEmpty()) top = top.getUp();
+
+        List<GameCell> vertCells = new ArrayList<>();
+        cur = top;
+        while (cur != null && !cur.isEmpty()) {
+            vertCells.add(cur);
+            cur = cur.getDown();
+        }
+
+        int vLen = vertCells.size();
+        if (vLen >= 3) {
+            for (int len = 3; len <= 5; len++) {
+                if (len > vLen) break;
+                for (int startIdx = 0; startIdx <= vLen - len; startIdx++) {
+                    StringBuilder sb = new StringBuilder(len);
+                    for (int k = 0; k < len; k++) sb.append(vertCells.get(startIdx + k).getBlock().getLetter());
+                    String candidate = sb.toString().toLowerCase();
+                    if (dictionary.isValid(candidate)) {
+                        GameCell matchStartCell = vertCells.get(startIdx);
+                        matches.add(new WordMatch(candidate, matchStartCell, Direction.DOWN));
+                    }
+                }
+            }
+        }
+
+        return matches;
     }
-
+    
     /**
      * Places a letterBlock in the starting gamecell
      *
@@ -273,21 +292,19 @@ public class GameBoard
     }
 
     public void applyGravity() {
-        Platform.runLater(() -> {
-            // Start from second-to-last row and go up
-            for (int row = rows - 2; row >= 0; row--) {
-                for (int col = 0; col < cols; col++) {
-                    GameCell cur = grid[col][row];
-                    if (!cur.isEmpty()) {
-                        LetterBlock block = cur.getBlock();
-                        // Keep moving down while possible
-                        while (canMove(block, Direction.DOWN)) {
-                            move(block, Direction.DOWN);
-                        }
+        isBoardBusy = true;
+        for (int row = rows - 2; row >= 0; row--) {
+            for (int col = 0; col < cols; col++) {
+                GameCell cur = grid[col][row];
+                if (!cur.isEmpty()) {
+                    LetterBlock block = cur.getBlock();
+                    while (canMove(block, Direction.DOWN)) {
+                        move(block, Direction.DOWN);
                     }
                 }
             }
-        });
+        }
+        isBoardBusy = false;
     }
 
     public void setInputHandler(InputHandler inputHandler) {

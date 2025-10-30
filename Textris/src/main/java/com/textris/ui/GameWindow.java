@@ -62,4 +62,23 @@ public class GameWindow
             pane.getChildren().add(blockNode);
         });
     }
+    
+    /**
+    * Removes a block node from the game board UI safely.
+    * @param node the StackPane node to remove
+    */
+    public static void removeBlockNode(javafx.scene.layout.StackPane node) {
+        Platform.runLater(() -> {
+            if (node != null && pane.getChildren().contains(node)) {
+                pane.getChildren().remove(node);
+            }
+        });
+    }
+
+    /**
+    * Forces a visual refresh of the game board after updates.
+    */
+    public static void refreshBoard() {
+    Platform.runLater(() -> pane.requestLayout());
+    }
 }
