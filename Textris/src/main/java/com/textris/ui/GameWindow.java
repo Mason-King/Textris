@@ -81,7 +81,7 @@ public class GameWindow {
         });
     }
 
-    /** Displays a "Game Over" overlay with a Restart button. */
+    /** Displays a Game Over with a Restart button. */
     public static void showGameOverOverlay(Runnable onRestart) {
         Platform.runLater(() -> {
             overlay.getChildren().clear();
