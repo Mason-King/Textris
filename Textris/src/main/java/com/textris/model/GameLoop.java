@@ -62,12 +62,12 @@ public class GameLoop
     }
 
     /**
-     * Called each tick to update the screen/move blocks
+     * tick to update the screen/move blocks
      */
     public void tick() {
         if (gameOver) return;
 
-        // 🛑 Skip tick if board is busy clearing words or applying gravity
+        // Skip tick if board is busy clearing words or applying gravity
         if (boardBusy) return;
 
         if (current == null) {
@@ -87,17 +87,15 @@ public class GameLoop
      * Generates the current block to be dropped
      */
     public void dropBlock() {
-        if (boardBusy) return; // 🛑 skip if board is busy
+        if (boardBusy) return;
 
         current = new LetterBlock();
 
         int spawnRow = 0, spawnCol = board.getColCount() / 2;
-
         current.setRow(spawnRow);
         current.setCol(spawnCol);
 
         GameWindow.addBlock(current);
-
         inputHandler.setActiveBlock(current, current.getBlock());
         inputHandler.setActiveCell(board.getCell(spawnCol, spawnRow));
 
@@ -105,8 +103,15 @@ public class GameLoop
             System.out.println("GAME OVER");
             current = null;
             gameOver = true;
+
+            GameWindow.showGameOverOverlay(() -> {
+                Platform.runLater(() -> {
+                    reset();
+                    start();
+                });
+            });
         }
-    }
+    }   
 
     /**
      * Starts dropping the current block from the top left
@@ -147,7 +152,6 @@ public class GameLoop
 
         for (GameBoard.WordMatch match : matches) {
             System.out.println("Found word: " + match.word + " dir=" + match.dir);
-            // Clear via the removeWord that accepts a startCell + direction
             removeWord(match.word, match.startCell, match.dir);
             addToScore(match.word.length());
         }
@@ -184,7 +188,7 @@ public class GameLoop
                 }
             }
 
-            // --- Flash animation ---
+            // --- Flash animation for clearing blocks ---
             for (StackPane node : nodesToFlash) {
                 javafx.animation.FadeTransition flash =
                         new javafx.animation.FadeTransition(javafx.util.Duration.millis(200), node);
@@ -268,11 +272,17 @@ public class GameLoop
     }
 
     public void reset() {
-        //TODO: Implement board clearing
         this.score = 0;
         this.current = null;
         this.previous = null;
         this.gameOver = false;
+        this.boardBusy = false;
+
+        // Clear board model and UI
+        board.clearBoard();
+        GameWindow.clearBoardUI();
+
+        System.out.println("Game restarted!");
     }
 
     public void start() {

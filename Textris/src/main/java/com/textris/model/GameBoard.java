@@ -91,6 +91,14 @@ public class GameBoard
             }
         }
     }
+    
+    public void clearBoard() {
+        for (int col = 0; col < cols; col++) {
+            for (int row = 0; row < rows; row++) {
+                grid[col][row].clear();
+            }
+        }
+    }
 
     /**
      * Moves a LetterBlock in the given direction if possible.
@@ -205,7 +213,7 @@ public class GameBoard
         List<WordMatch> matches = new ArrayList<>();
         if (startCell == null || startCell.isEmpty()) return matches;
 
-        // --- HORIZONTAL: build contiguous sequence and a list of cells ---
+        // --- HORIZONTAL ---
         // find leftmost cell in the contiguous run
         GameCell left = startCell;
         while (left.getLeft() != null && !left.getLeft().isEmpty()) left = left.getLeft();
@@ -224,7 +232,7 @@ public class GameBoard
             // for every substring length 3..5
             for (int len = 3; len <= 5; len++) {
                 if (len > hLen) break;
-                // slide window over horizCells
+                // slide window over horizontal cells
                 for (int startIdx = 0; startIdx <= hLen - len; startIdx++) {
                     StringBuilder sb = new StringBuilder(len);
                     for (int k = 0; k < len; k++) sb.append(horizCells.get(startIdx + k).getBlock().getLetter());
@@ -238,7 +246,7 @@ public class GameBoard
             }
         }
 
-        // --- VERTICAL: build contiguous sequence and a list of cells ---
+        // --- VERTICAL ---
         GameCell top = startCell;
         while (top.getUp() != null && !top.getUp().isEmpty()) top = top.getUp();
 
