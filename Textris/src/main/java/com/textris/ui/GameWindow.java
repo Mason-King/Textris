@@ -106,7 +106,7 @@ public class GameWindow {
         Platform.runLater(() -> scoreText.setText("Score: " + newScore));
     }
 
-    /** Displays a Game Over overlay with a Restart button. */
+    /** Displays a Game Over overlay with a Restart and Return to Main Menu button. */
     public static void showGameOverOverlay(Runnable onRestart) {
         Platform.runLater(() -> {
             overlay.getChildren().clear();
@@ -153,11 +153,51 @@ public class GameWindow {
                 }
             });
 
-            VBox layout = new VBox(20, gameOverText, restartButton);
+            // Return to Main Menu button
+            Button mainMenuButton = new Button("Main Menu");
+            mainMenuButton.setFont(Font.font("Arial", 24));
+            mainMenuButton.setStyle("""
+                -fx-background-color: #3498db;
+                -fx-text-fill: white;
+                -fx-font-weight: bold;
+                -fx-pref-width: 260;
+                -fx-pref-height: 60;
+                -fx-background-radius: 12;
+            """);
+
+            mainMenuButton.setOnMouseEntered(e -> mainMenuButton.setStyle("""
+                -fx-background-color: #2980b9;
+                -fx-text-fill: white;
+                -fx-font-weight: bold;
+                -fx-pref-width: 260;
+                -fx-pref-height: 60;
+                -fx-background-radius: 12;
+            """));
+
+            mainMenuButton.setOnMouseExited(e -> mainMenuButton.setStyle("""
+                -fx-background-color: #3498db;
+                -fx-text-fill: white;
+                -fx-font-weight: bold;
+                -fx-pref-width: 260;
+                -fx-pref-height: 60;
+                -fx-background-radius: 12;
+            """));
+
+            mainMenuButton.setOnAction(e -> {
+                Stage stage = (Stage) scene.getWindow();
+                try {
+                    new com.textris.ui.MainMenuUI().start(stage);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+            VBox layout = new VBox(20, gameOverText, restartButton, mainMenuButton);
             layout.setStyle("-fx-alignment: center;");
             overlay.getChildren().add(layout);
         });
     }
+
 }
 
 
