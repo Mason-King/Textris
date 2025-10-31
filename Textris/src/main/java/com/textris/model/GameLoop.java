@@ -1,17 +1,16 @@
 /**
- * Handles the state of the game
+ * Handles the state of the game.
  *
  * Responsibilities:
  * - Controls main game loop
  * - Manages game state
  *
  * Collaborators:
- * - Game Board
+ * - GameBoard
  * - Dictionary
- * 
- * @author Cruz Shafer
+ *
+ * @author Cruz Shafer, Carrie Rochell
  */
-
 package com.textris.model;
 
 import com.textris.media.Block;
@@ -23,7 +22,11 @@ import javafx.scene.layout.StackPane;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Creates and manages the game
+ * This includes spawning, moving, and locking blocks, as well as detecting words
+ * and updating the score.
+ */
 public class GameLoop {
     private GameBoard board;
     private Dictionary dictionary;
@@ -37,6 +40,13 @@ public class GameLoop {
     private boolean boardBusy = false;
     private boolean gameOn;
 
+    /**
+     * Constructs a GameLoop instance that controls game progression.
+     *
+     * @param inputHandler handles user input
+     * @param board the grid of cells where blocks are placed
+     * @param dictionary dictionary used for validating formed words
+     */
     public GameLoop(InputHandler inputHandler, GameBoard board, Dictionary dictionary) {
         this.board = board;
         this.dictionary = dictionary;
@@ -47,6 +57,10 @@ public class GameLoop {
         this.board.setInputHandler(inputHandler);
     }
 
+    /**
+     * Called each tick to update the screen and move blocks.
+     * Handles both falling block movement and block placement.
+     */
     public void tick() {
         if (gameOver || boardBusy) return;
 
@@ -63,6 +77,10 @@ public class GameLoop {
         }
     }
 
+    /**
+     * Generates a new falling block at the top of the board.
+     * Also checks for game over conditions if a new block cannot be placed.
+     */
     public void dropBlock() {
         if (boardBusy) return;
 
@@ -89,6 +107,10 @@ public class GameLoop {
         }
     }
 
+    /**
+     * Locks a block in place once it reaches the bottom of the board or another block.
+     * Triggers word detection and gravity application.
+     */
     public void setBlock() {
         findWords();
         previous = current;
@@ -96,10 +118,17 @@ public class GameLoop {
         applyGravity();
     }
 
+    /**
+     * Applies gravity to cause any floating blocks to fall to the lowest empty space.
+     */
     public void applyGravity() {
         board.applyGravity();
     }
 
+    /**
+     * Detects any valid words formed by the most recently placed block.
+     * Awards points and removes matched words from the board.
+     */
     public void findWords() {
         if (previous == null) return;
 
@@ -113,6 +142,14 @@ public class GameLoop {
         }
     }
 
+    /**
+     * Removes a detected word from the board, clears associated blocks,
+     * and plays a short fade animation.
+     *
+     * @param word the detected word
+     * @param startCell the starting cell of the word
+     * @param dir the direction of the word (horizontal or vertical)
+     */
     private void removeWord(String word, GameCell startCell, Direction dir) {
         if (word == null || word.isEmpty() || startCell == null || dir == null) return;
         boardBusy = true;
@@ -132,6 +169,7 @@ public class GameLoop {
                 else if (dir == Direction.DOWN) scanCell = scanCell.getDown();
             }
 
+            // Flash effect for cleared blocks
             for (StackPane node : nodesToFlash) {
                 javafx.animation.FadeTransition flash =
                         new javafx.animation.FadeTransition(javafx.util.Duration.millis(200), node);
@@ -172,21 +210,35 @@ public class GameLoop {
         });
     }
 
+    /**
+     * Returns the current player score.
+     * @return total score
+     */
     public int getScore() {
         return score;
     }
 
-    /** Adds points for cleared words and updates the UI */
+    /**
+     * Adds points for cleared words and updates the score display.
+     * @param wordLength length of the cleared word
+     */
     public void addToScore(int wordLength) {
         int points = wordLength * 10;
         score += points;
         GameWindow.updateScore(score);
     }
 
+    /**
+     * Checks whether the game has ended.
+     * @return true if the game is over, false otherwise
+     */
     public boolean isGameOver() {
         return gameOver;
     }
 
+    /**
+     * Resets the game state, clearing the board and score.
+     */
     public void reset() {
         this.score = 0;
         GameWindow.updateScore(0);
@@ -201,6 +253,10 @@ public class GameLoop {
         System.out.println("Game restarted!");
     }
 
+    /**
+     * Starts the main game loop
+     * Continues running until the game ends.
+     */
     public void start() {
         new Thread(() -> {
             while (!this.isGameOver()) {

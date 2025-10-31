@@ -1,3 +1,13 @@
+/**
+ * Handles the main in-game UI window.
+ * 
+ * Responsibilities:
+ * -Displays the grid 
+ * -displays falling blocks, overlays, and score.
+ * 
+ * @author Cruz Shafer, Mason King, Carrie Rochell
+ */
+
 package com.textris.ui;
 
 import com.textris.model.LetterBlock;
@@ -12,29 +22,42 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import com.textris.media.Block;
 
-/**
- * Handles the main in-game UI window.
- * Displays the grid, falling blocks, overlays, and score.
- */
+
 public class GameWindow {
+
+    /** The size of each cell/block in pixels. */
     public static final int SIZE = 60;
+
+    /** The total width of the game area in pixels. */
     public static int XMAX = SIZE * 5;
+
+    /** The total height of the game area in pixels. */
     public static int YMAX = SIZE * 8;
+
+    /** The logical grid representation of the game space. */
     public static int[][] MESH = new int[XMAX / SIZE][YMAX / SIZE];
 
+    /** The main Pane that displays all visible game elements. */
     private static Pane pane = new Pane();
+
+    /** The current Scene displayed in the game window. */
     private static Scene scene;
+
+    /** The currently active block (next falling block). */
     private static Block nextBlock = new Block('x');
+
+    /** StackPane used to display overlays such as Game Over. */
     private static StackPane overlay = new StackPane();
 
-    // --- Added for scoring ---
+    /** Text node displaying the player’s score. */
     private static Text scoreText = new Text("Score: 0");
 
     /**
-     * Initializes and shows the main game window.
+     * Initializes and displays the main game window.
+     *
+     * @param primaryStage the primary JavaFX stage to display the scene on
      */
     public static void show(Stage primaryStage) {
         Line line = new Line(XMAX, 0, XMAX, YMAX);
@@ -59,14 +82,29 @@ public class GameWindow {
         primaryStage.show();
     }
 
+    /**
+     * Returns the current JavaFX Scene associated with the GameWindow.
+     *
+     * @return the active game Scene
+     */
     public static Scene getScene() {
         return scene;
     }
 
+    /**
+     * Returns the currently active Block.
+     *
+     * @return the active Block
+     */
     public static Block getActiveBlock() {
         return nextBlock;
     }
 
+    /**
+     * Adds a new LetterBlock’s node to the visual game board.
+     *
+     * @param letterBlock the block to add to the UI
+     */
     public static void addBlock(LetterBlock letterBlock) {
         if (letterBlock == null || letterBlock.getBlock() == null) return;
 
@@ -78,6 +116,11 @@ public class GameWindow {
         Platform.runLater(() -> pane.getChildren().add(blockNode));
     }
 
+    /**
+     * Removes a visual block node from the board if present.
+     *
+     * @param node the StackPane node representing the block
+     */
     public static void removeBlockNode(StackPane node) {
         Platform.runLater(() -> {
             if (node != null && pane.getChildren().contains(node)) {
@@ -86,11 +129,16 @@ public class GameWindow {
         });
     }
 
+    /**
+     * Forces a UI refresh for the game pane layout.
+     */
     public static void refreshBoard() {
         Platform.runLater(() -> pane.requestLayout());
     }
 
-    /** Clears all game blocks visually (used when restarting). */
+    /** 
+     * Clears all game blocks visually (used when restarting or resetting the board).
+     */
     public static void clearBoardUI() {
         Platform.runLater(() -> {
             pane.getChildren().removeIf(node -> node instanceof StackPane);
@@ -99,14 +147,20 @@ public class GameWindow {
     }
 
     /**
-     * Updates the displayed score text.
-     * @param newScore the updated total score
+     * Updates the on-screen score display.
+     *
+     * @param newScore the player's updated score
      */
     public static void updateScore(int newScore) {
         Platform.runLater(() -> scoreText.setText("Score: " + newScore));
     }
 
-    /** Displays a Game Over overlay with a Restart and Return to Main Menu button. */
+    /**
+     * Displays a Game Over overlay containing buttons for restarting the game
+     * or returning to the main menu.
+     *
+     * @param onRestart a callback Runnable executed when the player selects Restart
+     */
     public static void showGameOverOverlay(Runnable onRestart) {
         Platform.runLater(() -> {
             overlay.getChildren().clear();
@@ -117,6 +171,7 @@ public class GameWindow {
             gameOverText.setFont(Font.font("Arial", 48));
             gameOverText.setFill(Color.RED);
 
+            // --- Restart Button Setup ---
             Button restartButton = new Button("Restart");
             restartButton.setFont(Font.font("Arial", 24));
             restartButton.setStyle("""
@@ -153,7 +208,7 @@ public class GameWindow {
                 }
             });
 
-            // Return to Main Menu button
+            // --- Main Menu Button Setup ---
             Button mainMenuButton = new Button("Main Menu");
             mainMenuButton.setFont(Font.font("Arial", 24));
             mainMenuButton.setStyle("""
@@ -192,13 +247,14 @@ public class GameWindow {
                 }
             });
 
+            // --- Layout ---
             VBox layout = new VBox(20, gameOverText, restartButton, mainMenuButton);
             layout.setStyle("-fx-alignment: center;");
             overlay.getChildren().add(layout);
         });
     }
-
 }
+
 
 
 
