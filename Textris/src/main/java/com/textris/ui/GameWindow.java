@@ -15,6 +15,10 @@ import javafx.stage.Stage;
 
 import com.textris.media.Block;
 
+/**
+ * Handles the main in-game UI window.
+ * Displays the grid, falling blocks, overlays, and score.
+ */
 public class GameWindow {
     public static final int SIZE = 60;
     public static int XMAX = SIZE * 5;
@@ -26,10 +30,23 @@ public class GameWindow {
     private static Block nextBlock = new Block('x');
     private static StackPane overlay = new StackPane();
 
+    // --- Added for scoring ---
+    private static Text scoreText = new Text("Score: 0");
+
+    /**
+     * Initializes and shows the main game window.
+     */
     public static void show(Stage primaryStage) {
         Line line = new Line(XMAX, 0, XMAX, YMAX);
         line.setStroke(Color.WHITE);
         pane.getChildren().add(line);
+
+        // Score display setup
+        scoreText.setFont(Font.font("Arial", 24));
+        scoreText.setFill(Color.WHITE);
+        scoreText.setLayoutX(XMAX + 40);
+        scoreText.setLayoutY(60);
+        pane.getChildren().add(scoreText);
 
         overlay.setPickOnBounds(false);
         overlay.setVisible(false);
@@ -81,7 +98,15 @@ public class GameWindow {
         });
     }
 
-    /** Displays a Game Over with a Restart button. */
+    /**
+     * Updates the displayed score text.
+     * @param newScore the updated total score
+     */
+    public static void updateScore(int newScore) {
+        Platform.runLater(() -> scoreText.setText("Score: " + newScore));
+    }
+
+    /** Displays a Game Over overlay with a Restart button. */
     public static void showGameOverOverlay(Runnable onRestart) {
         Platform.runLater(() -> {
             overlay.getChildren().clear();
@@ -134,5 +159,6 @@ public class GameWindow {
         });
     }
 }
+
 
 
