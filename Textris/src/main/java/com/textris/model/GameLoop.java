@@ -1,28 +1,33 @@
 /**
- * Handles the state of the game
+ * Handles the state of the game.
  *
  * Responsibilities:
  * - Controls main game loop
  * - Manages game state
  *
  * Collaborators:
- * - Game Board
+ * - GameBoard
  * - Dictionary
- * 
- * @author Cruz Shafer
+ *
+ * @author Cruz Shafer, Carrie Rochell
  */
-
 package com.textris.model;
 
 import com.textris.media.Block;
 import com.textris.ui.GameWindow;
 import com.textris.ui.InputHandler;
+import javafx.application.Platform;
+import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameLoop 
-{
+/**
+ * Creates and manages the game
+ * This includes spawning, moving, and locking blocks, as well as detecting words
+ * and updating the score.
+ */
+public class GameLoop {
     private GameBoard board;
     private Dictionary dictionary;
     private LetterBlock current;
@@ -32,37 +37,34 @@ public class GameLoop
 
     private Block fallingBlock;
     private InputHandler inputHandler;
-    private ScoreHandler scorer;
-
+    private boolean boardBusy = false;
     private boolean gameOn;
 
     /**
-     * Creates and manages the different aspects of the game in relation to one another
+     * Constructs a GameLoop instance that controls game progression.
      *
-     * @param board the actual grid of cells
-     * @param dictionary the instance of the dictionary
+     * @param inputHandler handles user input
+     * @param board the grid of cells where blocks are placed
+     * @param dictionary dictionary used for validating formed words
      */
     public GameLoop(InputHandler inputHandler, GameBoard board, Dictionary dictionary) {
-        //Init state variables
         this.board = board;
         this.dictionary = dictionary;
         this.previous = null;
         this.score = 0;
         this.gameOver = false;
-      
         this.inputHandler = inputHandler;
-        this.scorer = new ScoreHandler();
-
         this.board.setInputHandler(inputHandler);
     }
 
     /**
-     * Called each tick to update the screen/move blocks
+     * Called each tick to update the screen and move blocks.
+     * Handles both falling block movement and block placement.
      */
     public void tick() {
-        if (gameOver) return;
+        if (gameOver || boardBusy) return;
 
-        if(current == null) {
+        if (current == null) {
             dropBlock();
             return;
         }
@@ -73,155 +75,188 @@ public class GameLoop
             setBlock();
             dropBlock();
         }
-
     }
 
     /**
-     * Generates the current block to be dropped
+     * Generates a new falling block at the top of the board.
+     * Also checks for game over conditions if a new block cannot be placed.
      */
     public void dropBlock() {
+        if (boardBusy) return;
+
         current = new LetterBlock();
-
-        //Always spawn top center
-        int spawnRow = 0,  spawnCol = board.getColCount() / 2;
-
+        int spawnRow = 0, spawnCol = board.getColCount() / 2;
         current.setRow(spawnRow);
         current.setCol(spawnCol);
 
         GameWindow.addBlock(current);
-
         inputHandler.setActiveBlock(current, current.getBlock());
         inputHandler.setActiveCell(board.getCell(spawnCol, spawnRow));
 
-        //placeBlock returns a boolean
         if (!board.placeBlock(current)) {
             System.out.println("GAME OVER");
             current = null;
             gameOver = true;
-            //TODO: implement ending logic
+
+            GameWindow.showGameOverOverlay(() -> {
+                Platform.runLater(() -> {
+                    reset();
+                    start();
+                });
+            });
         }
     }
 
     /**
-     * Starts dropping the current block from the top left
+     * Locks a block in place once it reaches the bottom of the board or another block.
+     * Triggers word detection and gravity application.
      */
     public void setBlock() {
         findWords();
         previous = current;
         current = null;
         applyGravity();
-
-        if (!inputHandler.getActiveCell().canFall())
-        {
-            scorer.addScore(1);
-            findWords();
-        }
     }
 
     /**
-     * Sets a block in place once it reaches the bottom 
-     * of the grid or another block
+     * Applies gravity to cause any floating blocks to fall to the lowest empty space.
      */
     public void applyGravity() {
-        // TODO: allow all blocks already on board to fall down
-        // so that they rest at the bottom (or on top of another block)
         board.applyGravity();
     }
 
     /**
-     * Collects strings containing the recently added block
-     * and searches for words in them
+     * Detects any valid words formed by the most recently placed block.
+     * Awards points and removes matched words from the board.
      */
     public void findWords() {
-        if(previous == null) return;
+        if (previous == null) return;
 
         GameCell cell = board.getCell(previous.getCol(), previous.getRow());
-        var strings = board.detectWords(cell);
+        List<GameBoard.WordMatch> matches = board.detectWords(cell);
 
-        for (String word : strings) {
-            if(dictionary.isValid(word)) {
-                System.out.println("Found word: " + word);
-                //Remove word!
-                removeWord(word, cell);
-                addToScore(word.length());
-            }
+        for (GameBoard.WordMatch match : matches) {
+            System.out.println("Found word: " + match.word + " dir=" + match.dir);
+            removeWord(match.word, match.startCell, match.dir);
+            addToScore(match.word.length()); // award 10 points per letter
         }
-    }
-
-    private void removeWord(String word, GameCell startCell) {
-        // Horizontal
-        GameCell left = startCell;
-        while (left.getLeft() != null && !left.getLeft().isEmpty()) {
-            left = left.getLeft();
-        }
-
-        GameCell cur = left;
-        for (int i = 0; i < word.length(); i++) {
-            if (cur == null) break;
-            cur.clear();
-            cur = cur.getRight();
-        }
-
-        // Vertical
-        GameCell top = startCell;
-        while (top.getUp() != null && !top.getUp().isEmpty()) {
-            top = top.getUp();
-        }
-
-        cur = top;
-        for (int i = 0; i < word.length(); i++) {
-            if (cur == null) break;
-            cur.clear();
-            cur = cur.getDown();
-        }
-
-        // Let blocks above fall down after clearing
-        board.applyGravity();
     }
 
     /**
-     * accessing for score field
+     * Removes a detected word from the board, clears associated blocks,
+     * and plays a short fade animation.
      *
-     * @return copy of score variable
+     * @param word the detected word
+     * @param startCell the starting cell of the word
+     * @param dir the direction of the word (horizontal or vertical)
+     */
+    private void removeWord(String word, GameCell startCell, Direction dir) {
+        if (word == null || word.isEmpty() || startCell == null || dir == null) return;
+        boardBusy = true;
+
+        Platform.runLater(() -> {
+            List<StackPane> nodesToFlash = new ArrayList<>();
+            GameCell scanCell = startCell;
+
+            for (int i = 0; i < word.length() && scanCell != null && !scanCell.isEmpty(); i++) {
+                LetterBlock block = scanCell.getBlock();
+                if (block != null && block.getBlock() != null) {
+                    StackPane node = block.getBlock().getBlock();
+                    if (node != null) nodesToFlash.add(node);
+                }
+
+                if (dir == Direction.RIGHT) scanCell = scanCell.getRight();
+                else if (dir == Direction.DOWN) scanCell = scanCell.getDown();
+            }
+
+            // Flash effect for cleared blocks
+            for (StackPane node : nodesToFlash) {
+                javafx.animation.FadeTransition flash =
+                        new javafx.animation.FadeTransition(javafx.util.Duration.millis(200), node);
+                flash.setFromValue(1.0);
+                flash.setToValue(0.2);
+                flash.setAutoReverse(true);
+                flash.setCycleCount(2);
+                flash.play();
+            }
+
+            javafx.animation.PauseTransition pause =
+                    new javafx.animation.PauseTransition(javafx.util.Duration.millis(400));
+
+            pause.setOnFinished(e -> {
+                GameCell clearCell = startCell;
+                for (int i = 0; i < word.length() && clearCell != null; i++) {
+                    LetterBlock block = clearCell.getBlock();
+                    if (block != null && block.getBlock() != null) {
+                        StackPane node = block.getBlock().getBlock();
+                        if (node != null) GameWindow.removeBlockNode(node);
+                    }
+                    clearCell.clear();
+
+                    if (dir == Direction.RIGHT) clearCell = clearCell.getRight();
+                    else if (dir == Direction.DOWN) clearCell = clearCell.getDown();
+                }
+
+                GameWindow.refreshBoard();
+                board.applyGravity();
+
+                javafx.animation.PauseTransition unfreeze =
+                        new javafx.animation.PauseTransition(javafx.util.Duration.millis(250));
+                unfreeze.setOnFinished(ev -> boardBusy = false);
+                unfreeze.play();
+            });
+
+            pause.play();
+        });
+    }
+
+    /**
+     * Returns the current player score.
+     * @return total score
      */
     public int getScore() {
         return score;
     }
 
     /**
-     * Adds a value to the current score
-     *
-     * @return if the game is running
+     * Adds points for cleared words and updates the score display.
+     * @param wordLength length of the cleared word
      */
-    public void addToScore(int bonus) {
-        score += bonus;
+    public void addToScore(int wordLength) {
+        int points = wordLength * 10;
+        score += points;
+        GameWindow.updateScore(score);
     }
 
-    public void moveCurrent(Direction direction) {
-        if (current != null && board.canMove(current, direction)) {
-            board.move(current, direction);
-        }
-    }
-
-    public void dropToBottom() {
-        while (current != null && board.canMove(current, Direction.DOWN)) {
-            board.move(current, Direction.DOWN);
-        }
-        setBlock();
-    }
-
+    /**
+     * Checks whether the game has ended.
+     * @return true if the game is over, false otherwise
+     */
     public boolean isGameOver() {
         return gameOver;
     }
 
+    /**
+     * Resets the game state, clearing the board and score.
+     */
     public void reset() {
-        //TODO: Implement board clearing
         this.score = 0;
+        GameWindow.updateScore(0);
         this.current = null;
         this.previous = null;
         this.gameOver = false;
+        this.boardBusy = false;
+
+        board.clearBoard();
+        GameWindow.clearBoardUI();
+
+        System.out.println("Game restarted!");
     }
 
+    /**
+     * Starts the main game loop
+     * Continues running until the game ends.
+     */
     public void start() {
         new Thread(() -> {
             while (!this.isGameOver()) {
@@ -231,8 +266,8 @@ public class GameLoop
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
-//                board.printBoard();
             }
         }).start();
     }
 }
+
