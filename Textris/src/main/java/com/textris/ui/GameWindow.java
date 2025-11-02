@@ -60,7 +60,6 @@ public class GameWindow {
      * @param primaryStage the primary JavaFX stage to display the scene on
      */
 public static void show(Stage primaryStage) {
-    // Prevent duplicate children error by clearing or recreating the pane
     pane.getChildren().clear();
 
     Line line = new Line(XMAX, 0, XMAX, YMAX);

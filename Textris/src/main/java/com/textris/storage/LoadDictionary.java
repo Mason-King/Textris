@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * - Loads in word list text file into a String[] array when Dictionary instantiates.
  * - Performs binary search on the array when Dictionary needs to check a possible word.
  *
- * @author Jason Watts
+ * @author Jason Watts, Carrie Rochell
  */
 public class LoadDictionary {
     private static String[] words = null;
@@ -26,13 +26,13 @@ public class LoadDictionary {
      * @throws IOException if file cannot be read
      */
     public static void load() throws IOException {
-        // ✅ Prevent multiple reloads if dictionary already loaded
+        //Prevent multiple reloads if dictionary already loaded
         if (loaded && words != null && listSize > 0) {
             System.out.println("Dictionary already loaded (" + listSize + " words)\n");
             return;
         }
 
-        // ✅ Reset counters before each load
+        //Reset counters before each load
         listSize = 0;
 
         ArrayList<String> wordsTemp = new ArrayList<>();
@@ -58,7 +58,7 @@ public class LoadDictionary {
         readFile.close();
         inFile.close();
 
-        loaded = true; // ✅ Mark dictionary as loaded
+        loaded = true; //Mark dictionary as loaded
 
         System.out.println("Dictionary loaded.\n");
         System.out.println("Dictionary size: " + listSize + " words\n");
