@@ -246,11 +246,7 @@ adunc
 adure
 adusk
 adust
-adv
-advt
-ady
 adyta
-adz
 adze
 adzer
 adzes
@@ -308,8 +304,6 @@ agasp
 agast
 agaty
 agaze
-agba
-agcy
 age
 aged
 agend
@@ -2671,6 +2665,7 @@ catan
 catch
 catel
 cater
+cat
 cats
 catso
 catur
@@ -2693,6 +2688,7 @@ cause
 cava
 cavae
 caval
+cave
 cavea
 caved
 cavel
@@ -2785,9 +2781,6 @@ cetes
 cetic
 cetin
 cetyl
-cfh
-cfm
-cfs
 chaa
 chab
 chack
@@ -3447,6 +3440,8 @@ craie
 crake
 cramp
 crams
+crane
+cranes
 crang
 crank
 crany
@@ -4007,8 +4002,10 @@ denda
 denes
 denim
 denom
+den
 dens
 dense
+dent
 dents
 denty
 deota
@@ -4075,6 +4072,7 @@ dewan
 dewax
 dewed
 dewer
+dew
 dews
 dewy
 dexes
@@ -4083,8 +4081,6 @@ dexy
 deynt
 deys
 dgag
-dha
-dhabb
 dhai
 dhak
 dhaks
@@ -7160,6 +7156,7 @@ halts
 halva
 halve
 halwe
+ham
 hame
 hames
 hami
@@ -7720,6 +7717,7 @@ husks
 huso
 hussy
 hust
+hut
 hutch
 hutia
 hutre
@@ -7941,7 +7939,6 @@ impy
 imshi
 imu
 imvia
-ina
 inact
 inae
 inaja
@@ -11529,6 +11526,7 @@ orant
 orary
 oras
 orate
+orb
 orbed
 orbic
 orbit
@@ -13564,12 +13562,15 @@ rins
 rinse
 riot
 riots
+rip
 ripa
 ripal
+ripe
 riped
 ripen
 riper
 ripes
+rips
 ripup
 risen
 riser
@@ -14677,6 +14678,7 @@ sish
 sisi
 siss
 sist
+sit
 sitao
 sitar
 sitch

@@ -191,7 +191,7 @@ public class GameBoard {
     public GameCell getCell(int x, int y) {
         return grid[x][y];
     }
-
+    
     /**
      * Detects horizontal and vertical words (3–5 letters) formed around the given cell.
      *
@@ -231,11 +231,8 @@ public class GameBoard {
         }
 
         // VERTICAL SCAN
-        GameCell top = startCell;
-        while (top.getUp() != null && !top.getUp().isEmpty()) top = top.getUp();
-
         List<GameCell> vertCells = new ArrayList<>();
-        cur = top;
+        cur = startCell;
         while (cur != null && !cur.isEmpty()) {
             vertCells.add(cur);
             cur = cur.getDown();
