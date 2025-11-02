@@ -61,7 +61,7 @@ public class GameWindow {
      */
 public static void show(Stage primaryStage) {
     pane.getChildren().clear();
-    scoreText.setText("Score: 0"); // scoreText.setText("Score: 0"); // ✅ Reset score display each time a new game startsReset score display each time a new game starts
+    scoreText.setText("Score: 0"); // Reset score display each time a new game starts
 
     Line line = new Line(XMAX, 0, XMAX, YMAX);
     line.setStroke(Color.WHITE);
