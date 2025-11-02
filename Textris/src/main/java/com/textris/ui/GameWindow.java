@@ -56,28 +56,32 @@ public class GameWindow {
      *
      * @param primaryStage the primary JavaFX stage to display the scene on
      */
-    public static void show(Stage primaryStage) {
-        Line line = new Line(XMAX, 0, XMAX, YMAX);
-        line.setStroke(Color.WHITE);
-        pane.getChildren().add(line);
+public static void show(Stage primaryStage) {
+    pane.getChildren().clear();
+    scoreText.setText("Score: 0"); // Reset score display each time a new game starts
 
-        // Score display setup
-        scoreText.setFont(Font.font("Arial", 24));
-        scoreText.setFill(Color.WHITE);
-        scoreText.setLayoutX(XMAX + 40);
-        scoreText.setLayoutY(60);
-        pane.getChildren().add(scoreText);
+    Line line = new Line(XMAX, 0, XMAX, YMAX);
+    line.setStroke(Color.WHITE);
+    pane.getChildren().add(line);
 
-        overlay.setPickOnBounds(false);
-        overlay.setVisible(false);
+    // Score display setup
+    scoreText.setFont(Font.font("Arial", 24));
+    scoreText.setFill(Color.WHITE);
+    scoreText.setLayoutX(XMAX + 40);
+    scoreText.setLayoutY(60);
+    pane.getChildren().add(scoreText);
 
-        StackPane root = new StackPane(pane, overlay);
-        scene = new Scene(root, XMAX + 180, YMAX);
-        pane.setStyle("-fx-background-color: black;");
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Textris - Game Window");
-        primaryStage.show();
-    }
+    overlay.setPickOnBounds(false);
+    overlay.setVisible(false);
+
+    StackPane root = new StackPane(pane, overlay);
+    scene = new Scene(root, XMAX + 180, YMAX);
+    pane.setStyle("-fx-background-color: black;");
+    primaryStage.setScene(scene);
+    primaryStage.setTitle("Textris - Game Window");
+    primaryStage.show();
+}
+
 
     /**
      * Returns the current JavaFX Scene associated with the GameWindow.
