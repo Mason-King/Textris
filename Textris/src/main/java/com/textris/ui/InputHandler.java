@@ -1,3 +1,13 @@
+package com.textris.ui;
+
+import com.textris.media.Block;
+import com.textris.model.Direction;
+import com.textris.model.GameBoard;
+import com.textris.model.GameCell;
+import com.textris.model.LetterBlock;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+
 /**
  * This class takes user input the move a LetterBlock on the GameBoard.
  *
@@ -9,17 +19,6 @@
  * - GameBoard
  * - LetterBlock
  */
-
-package com.textris.ui;
-
-import com.textris.media.Block;
-import com.textris.model.Direction;
-import com.textris.model.GameBoard;
-import com.textris.model.GameCell;
-import com.textris.model.LetterBlock;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-
 public class InputHandler 
 {
     private final GameBoard board;
@@ -63,6 +62,7 @@ public class InputHandler
      * Sets the currently active block that responds to player input.
      *
      * @param block the currently falling block
+     * @param sprite the UI representation of the currently falling block
      */
     public void setActiveBlock(LetterBlock block, Block sprite) 
     {
@@ -119,6 +119,11 @@ public class InputHandler
          }
      }
 
+     /**
+     * Updates the current active cell with a new block.
+     * 
+     * @param block the new active block
+     */
     public void updateActiveCell(LetterBlock block) {
         if (block != null) {
             this.currentCell = board.getCell(block.getCol(), block.getRow());

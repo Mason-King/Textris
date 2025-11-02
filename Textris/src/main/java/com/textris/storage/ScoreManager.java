@@ -7,10 +7,10 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * The {@code ScoreManager} class provides methods for managing player scores in the game.
+ * The ScoreManagerssss class provides methods for managing player scores in the game.
  * Scores are stored in a JSON file located in a dedicated "Textris" folder inside the user's home directory.
  *
- * <p>All scores are persisted between application sessions.</p>
+ * All scores are persisted between application sessions.
  *
  */
 public class ScoreManager {

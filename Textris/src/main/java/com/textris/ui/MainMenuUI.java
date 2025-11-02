@@ -14,44 +14,26 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-// CHECK IF JAVAFX NEEDS TO BE BUNDLED WITH PROJECT
-
-
 /**
- * The {@code MainMenuUI} class represents the main menu screen of the Textris game.
- * <p>
+ * The MainMenuUI class represents the main menu screen of the Textris game.
+ * 
  * This class displays the game logo and provides three main buttons for user interaction:
- * <ul>
- *     <li><b>Start Game</b> — Placeholder for starting a new game.</li>
- *     <li><b>Scoreboard</b> — Opens the {@link ScoreboardUI} scene to display top scores.</li>
- *     <li><b>Exit</b> — Closes the application.</li>
- * </ul>
- * </p>
- * 
- * <p>
- * Each button has a distinct background color, hover effect, and a subtle drop shadow:
- * <ul>
- *     <li>Start Game: Green</li>
- *     <li>Scoreboard: Blue</li>
- *     <li>Exit: Red</li>
- * </ul>
- * The hover effect slightly lightens the button color and maintains the shadow.
- * </p>
- * 
- * <p>The logo also has a drop shadow to visually pop against the black background.</p>
+ *     Start Game — Placeholder for starting a new game.
+ *     Scoreboard — Opens the ScoreboardUI scene to display top scores.
+ *     Exit — Closes the application.
  *
- * <p><b>Example Usage:</b></p>
- * <pre>{@code
- * public static void main(String[] args) {
- *     MainMenuUI.launchMenu(args);
- * }
- * }</pre>
+ * Each button has a distinct background color, hover effect, and a subtle drop shadow:
+ *     Start Game: Green
+ *     Scoreboard: Blue
+ *     Exit: Red
  * 
- * <h2>UI Effects</h2>
- * <ul>
- *     <li><b>Drop Shadow:</b> Adds depth to buttons and logo, making them stand out against the background.</li>
- *     <li><b>Hover Color:</b> The button color is lightened by 20% when hovered using {@code derive(color, 20%)}.</li>
- * </ul>
+ * The hover effect slightly lightens the button color and maintains the shadow.
+ * 
+ * The logo also has a drop shadow to visually pop against the black background.
+ *
+ * UI Effects
+ *     Drop Shadow: Adds depth to buttons and logo, making them stand out against the background.
+ *     Hover Color: The button color is lightened by 20% when hovered using derive(color, 20%).
  * 
  */
 public class MainMenuUI extends Application {
@@ -61,9 +43,8 @@ public class MainMenuUI extends Application {
 
     /**
      * Starts the JavaFX application by initializing and displaying the main menu.
-     * <p>
+     * 
      * This method sets up the logo, buttons, layout, colors, hover effects, drop shadows, and scene.
-     * </p>
      *
      * @param stage the primary stage for this application
      */
@@ -124,11 +105,10 @@ public class MainMenuUI extends Application {
 
     /**
      * Applies background color, font styling, hover effects, and a drop shadow to a button.
-     * <p>
+     * 
      * Hovering over the button slightly lightens the background color by 20% using
      * {@code derive(color, 20%)}. The drop shadow gives depth to the button, making it
      * visually pop against the background.
-     * </p>
      *
      * @param button the button to style
      * @param color  the base color in hexadecimal format (e.g., "#4CAF50")
@@ -168,10 +148,9 @@ public class MainMenuUI extends Application {
 
     /**
      * Displays the main menu scene on the specified stage.
-     * <p>
+     * 
      * This method can be used by other scenes (e.g., {@link ScoreboardUI})
      * to return the user to the main menu.
-     * </p>
      *
      * @param stage the stage on which to display the main menu
      */
@@ -186,9 +165,8 @@ public class MainMenuUI extends Application {
 
     /**
      * Launches the main menu as a standalone JavaFX application.
-     * <p>
+     * 
      * This method is a wrapper around {@link Application#launch(String...)}.
-     * </p>
      *
      * @param args command-line arguments passed to the application
      */

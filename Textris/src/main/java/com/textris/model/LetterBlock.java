@@ -6,8 +6,6 @@
  *
  * Collaborators:
  * - LetterWeights
- *
- * @author Cruz Shafer
  */
 
 package com.textris.model;
@@ -56,22 +54,47 @@ public class LetterBlock
         return letter;
     }
 
+    /**
+     * Returns the row of the block.
+     *
+     * @return row
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * Changes the row of the block.
+     *
+     * @param row the new row
+     */
     public void setRow(int row) {
         this.row = row;
     }
 
+    /**
+     * Returns the column of the block.
+     *
+     * @return column
+     */
     public int getCol() {
         return col;
     }
 
+    /**
+     * Changes the column of the block.
+     *
+     * @param col the new column
+     */
     public void setCol(int col) {
         this.col = col;
     }
 
+    /**
+     * Gets the block UI element stored by the LetterBlock.
+     *
+     * @return the block UI element
+     */
     public Block getBlock() {
         return this.block;
     }

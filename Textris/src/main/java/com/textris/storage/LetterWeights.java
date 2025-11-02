@@ -1,3 +1,10 @@
+package com.textris.storage;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+import java.util.TreeMap;
+
 /**
  * This class contains a reference to a file that holds the
  * weighted list of letters.
@@ -6,17 +13,7 @@
  * - Allows other classes to reference letter weights
  *
  * Collaborators:
- *
- * @author Cruz Shafer
  */
-
-package com.textris.storage;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
-import java.util.TreeMap;
-
 public class LetterWeights 
 {
     // file of cumulative weighted regions from 0 to 9999
@@ -87,13 +84,5 @@ public class LetterWeights
     public static int getUpperBound() 
     {
         return 10000;
-    }
-
-
-
-
-    public static void main(String[] args)
-    {
-        
     }
 }

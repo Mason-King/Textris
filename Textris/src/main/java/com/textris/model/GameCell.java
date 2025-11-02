@@ -1,3 +1,5 @@
+package com.textris.model;
+
 /**
  * This class represents a cell in the GameBoard that holds a
  * LetterBlock.
@@ -9,11 +11,7 @@
  * Collaborators:
  * - LetterBlock
  * - GameBoard
- * 
- * @author Cruz Shafer
  */
-package com.textris.model;
-
 public class GameCell 
 {
     
@@ -30,8 +28,14 @@ public class GameCell
         this.block = this.empty;
     }
     
-    // JASON WATTS - MIGHT BE UNNECCESSARY, BUT MADE JUST IN CASE
-    public GameCell(GameCell copyCell){
+
+    /**
+     * Copy constructor.
+     * 
+     * @param copyCell the GameCell to copy
+     */    
+    public GameCell(GameCell copyCell)
+    {
         this.block = new LetterBlock(copyCell.getBlock().getLetter());
         this.left = copyCell.getLeft();
         this.right = copyCell.getRight();

@@ -15,7 +15,6 @@ import java.util.ArrayList;
  * 
  * @author Jason Watts
  */
-
 public class LoadDictionary {
     private static String[] words = null;
     private static int listSize = 0;
@@ -23,7 +22,7 @@ public class LoadDictionary {
     /**
      * Loads word list file Twordlist.txt into memory for the duration of the game.
      * 
-     * @throws IOException
+     * @throws IOException an exception with IO
      */
     public static void load() throws java.io.IOException {
         ArrayList<String> wordsTemp = new ArrayList<>();
@@ -53,7 +52,7 @@ public class LoadDictionary {
     /**
      * Performs binary search on String[] array words for a given string.
      * 
-     * @param wordToSearch
+     * @param wordToSearch the word to search for
      * @return true or false whether or not word is in dictionary
      */
     public static boolean findWord(String wordToSearch){

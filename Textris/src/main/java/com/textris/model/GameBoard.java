@@ -1,3 +1,11 @@
+package com.textris.model;
+
+import java.util.List;
+import com.textris.ui.GameWindow;
+import com.textris.ui.InputHandler;
+import javafx.application.Platform;
+import java.util.ArrayList;
+
 /**
  * This class represents the main game board.
  *
@@ -10,18 +18,9 @@
  * - LetterBlock
  * - GameCell
  * 
- * @authors Cruz Shafer, Jason Watts, Carrie Rochell
  */
-package com.textris.model;
-
-import java.util.List;
-import com.textris.model.GameCell;
-import com.textris.ui.GameWindow;
-import com.textris.ui.InputHandler;
-import javafx.application.Platform;
-import java.util.ArrayList;
-
-public class GameBoard {
+public class GameBoard 
+{
     private final Dictionary dictionary = new Dictionary();
     private final int cols;
     private final int rows; // add 1 row for checking if game should end
@@ -32,7 +31,8 @@ public class GameBoard {
     /**
      * Creates an empty GameBoard by interconnecting GameCells.
      */
-    public GameBoard() {
+    public GameBoard() 
+    {
         this.cols = 5;
         this.rows = 8;
         grid = new GameCell[this.cols][this.rows];
@@ -44,16 +44,29 @@ public class GameBoard {
      *
      * @return true if the board is busy, false otherwise
      */
-    public boolean isBoardBusy() {
+    public boolean isBoardBusy() 
+    {
         return isBoardBusy;
     }
 
     /**
      * Represents a found word on the board and its starting position/direction.
      */
-    public static class WordMatch {
+    public static class WordMatch 
+    {
+        /**
+        * The found word.
+        */
         public final String word;
+
+        /**
+        * The starting cell's position.
+        */
         public final GameCell startCell;
+
+        /**
+        * The direction of the word.
+        */
         public final Direction dir;
 
         /**
@@ -63,7 +76,8 @@ public class GameBoard {
          * @param startCell the cell containing the first letter
          * @param dir the direction of the word (horizontal or vertical)
          */
-        public WordMatch(String word, GameCell startCell, Direction dir) {
+        public WordMatch(String word, GameCell startCell, Direction dir) 
+        {
             this.word = word;
             this.startCell = startCell;
             this.dir = dir;
@@ -73,15 +87,20 @@ public class GameBoard {
     /**
      * Initializes each GameCell in the grid and links its neighbors.
      */
-    private void initializeGrid() {
-        for (int i = 0; i < cols; i++) {
-            for (int j = 0; j < rows; j++) {
+    private void initializeGrid() 
+    {
+        for (int i = 0; i < cols; i++) 
+        {
+            for (int j = 0; j < rows; j++) 
+            {
                 grid[i][j] = new GameCell();
             }
         }
 
-        for (int i = 0; i < cols; i++) {
-            for (int j = 0; j < rows; j++) {
+        for (int i = 0; i < cols; i++) 
+        {
+            for (int j = 0; j < rows; j++) 
+            {
                 GameCell cell = grid[i][j];
                 cell.setLeft(i > 0 ? grid[i - 1][j] : null);
                 cell.setRight(i < cols - 1 ? grid[i + 1][j] : null);
@@ -94,9 +113,12 @@ public class GameBoard {
     /**
      * Clears all cells on the board, resetting it to empty.
      */
-    public void clearBoard() {
-        for (int col = 0; col < cols; col++) {
-            for (int row = 0; row < rows; row++) {
+    public void clearBoard() 
+    {
+        for (int col = 0; col < cols; col++) 
+        {
+            for (int row = 0; row < rows; row++) 
+            {
                 grid[col][row].clear();
             }
         }
@@ -109,7 +131,8 @@ public class GameBoard {
      * @param block the LetterBlock to move
      * @param dir the direction to move (LEFT, RIGHT, DOWN)
      */
-    public void move(LetterBlock block, Direction dir) {
+    public void move(LetterBlock block, Direction dir) 
+    {
         int row = block.getRow();
         int col = block.getCol();
         grid[col][row].clear();
@@ -117,7 +140,8 @@ public class GameBoard {
         int newRow = row;
         int newCol = col;
 
-        switch (dir) {
+        switch (dir) 
+        {
             case DOWN -> newRow++;
             case LEFT -> newCol--;
             case RIGHT -> newCol++;
@@ -130,7 +154,8 @@ public class GameBoard {
         inputHandler.updateActiveCell(block);
         final LetterBlock fb = block;
 
-        Platform.runLater(() -> {
+        Platform.runLater(() -> 
+        {
             var node = fb.getBlock().getBlock();
             node.setLayoutX(fb.getCol() * GameWindow.SIZE);
             node.setLayoutY(fb.getRow() * GameWindow.SIZE);
@@ -144,11 +169,13 @@ public class GameBoard {
      * @param dir the direction to test
      * @return true if the block can move, false otherwise
      */
-    public boolean canMove(LetterBlock block, Direction dir) {
+    public boolean canMove(LetterBlock block, Direction dir) 
+    {
         int row = block.getRow();
         int col = block.getCol();
 
-        switch (dir) {
+        switch (dir) 
+        {
             case DOWN:
                 if (row == rows - 1) return false;
                 return grid[col][row + 1].isEmpty();
@@ -168,7 +195,8 @@ public class GameBoard {
      *
      * @return number of rows
      */
-    public int getRowCount() {
+    public int getRowCount() 
+    {
         return this.rows;
     }
 
@@ -177,7 +205,8 @@ public class GameBoard {
      *
      * @return number of columns
      */
-    public int getColCount() {
+    public int getColCount() 
+    {
         return this.cols;
     }
 
@@ -188,7 +217,8 @@ public class GameBoard {
      * @param y the row index
      * @return the GameCell at that position
      */
-    public GameCell getCell(int x, int y) {
+    public GameCell getCell(int x, int y) 
+    {
         return grid[x][y];
     }
 
@@ -198,7 +228,8 @@ public class GameBoard {
      * @param startCell the most recently placed cell
      * @return list of detected WordMatch objects
      */
-    public List<WordMatch> detectWords(GameCell startCell) {
+    public List<WordMatch> detectWords(GameCell startCell) 
+    {
         List<WordMatch> matches = new ArrayList<>();
         if (startCell == null || startCell.isEmpty()) return matches;
 
@@ -208,21 +239,26 @@ public class GameBoard {
 
         List<GameCell> horizCells = new ArrayList<>();
         GameCell cur = left;
-        while (cur != null && !cur.isEmpty()) {
+        while (cur != null && !cur.isEmpty()) 
+        {
             horizCells.add(cur);
             cur = cur.getRight();
         }
 
         int hLen = horizCells.size();
-        if (hLen >= 3) {
-            for (int len = 3; len <= 5; len++) {
+        if (hLen >= 3) 
+        {
+            for (int len = 3; len <= 5; len++) 
+            {
                 if (len > hLen) break;
-                for (int startIdx = 0; startIdx <= hLen - len; startIdx++) {
+                for (int startIdx = 0; startIdx <= hLen - len; startIdx++) 
+                {
                     StringBuilder sb = new StringBuilder(len);
                     for (int k = 0; k < len; k++)
                         sb.append(horizCells.get(startIdx + k).getBlock().getLetter());
                     String candidate = sb.toString().toLowerCase();
-                    if (dictionary.isValid(candidate)) {
+                    if (dictionary.isValid(candidate)) 
+                    {
                         GameCell matchStartCell = horizCells.get(startIdx);
                         matches.add(new WordMatch(candidate, matchStartCell, Direction.RIGHT));
                     }
@@ -236,21 +272,26 @@ public class GameBoard {
 
         List<GameCell> vertCells = new ArrayList<>();
         cur = top;
-        while (cur != null && !cur.isEmpty()) {
+        while (cur != null && !cur.isEmpty()) 
+        {
             vertCells.add(cur);
             cur = cur.getDown();
         }
 
         int vLen = vertCells.size();
-        if (vLen >= 3) {
-            for (int len = 3; len <= 5; len++) {
+        if (vLen >= 3) 
+        {
+            for (int len = 3; len <= 5; len++) 
+            {
                 if (len > vLen) break;
-                for (int startIdx = 0; startIdx <= vLen - len; startIdx++) {
+                for (int startIdx = 0; startIdx <= vLen - len; startIdx++) 
+                {
                     StringBuilder sb = new StringBuilder(len);
                     for (int k = 0; k < len; k++)
                         sb.append(vertCells.get(startIdx + k).getBlock().getLetter());
                     String candidate = sb.toString().toLowerCase();
-                    if (dictionary.isValid(candidate)) {
+                    if (dictionary.isValid(candidate)) 
+                    {
                         GameCell matchStartCell = vertCells.get(startIdx);
                         matches.add(new WordMatch(candidate, matchStartCell, Direction.DOWN));
                     }
@@ -267,16 +308,19 @@ public class GameBoard {
      * @param block the block to be placed
      * @return true if the block was placed successfully, false otherwise
      */
-    public boolean placeBlock(LetterBlock block) {
+    public boolean placeBlock(LetterBlock block) 
+    {
         int row = block.getRow();
         int col = block.getCol();
 
-        if (row < 0 || row >= this.rows || col < 0 || col >= this.cols) {
+        if (row < 0 || row >= this.rows || col < 0 || col >= this.cols) 
+        {
             return false;
         }
 
         GameCell cell = grid[col][row];
-        if (!cell.isEmpty()) {
+        if (!cell.isEmpty()) 
+        {
             return false;
         }
 
@@ -287,14 +331,19 @@ public class GameBoard {
     /**
      * Applies gravity to all blocks, letting unsupported blocks fall downward.
      */
-    public void applyGravity() {
+    public void applyGravity() 
+    {
         isBoardBusy = true;
-        for (int row = rows - 2; row >= 0; row--) {
-            for (int col = 0; col < cols; col++) {
+        for (int row = rows - 2; row >= 0; row--) 
+        {
+            for (int col = 0; col < cols; col++) 
+            {
                 GameCell cur = grid[col][row];
-                if (!cur.isEmpty()) {
+                if (!cur.isEmpty()) 
+                {
                     LetterBlock block = cur.getBlock();
-                    while (canMove(block, Direction.DOWN)) {
+                    while (canMove(block, Direction.DOWN)) 
+                    {
                         move(block, Direction.DOWN);
                     }
                 }
@@ -308,24 +357,33 @@ public class GameBoard {
      *
      * @param inputHandler the InputHandler to associate
      */
-    public void setInputHandler(InputHandler inputHandler) {
+    public void setInputHandler(InputHandler inputHandler) 
+    {
         this.inputHandler = inputHandler;
     }
 
     /**
      * Prints the current board state to the console for debugging.
      */
-    public void printBoard() {
+    public void printBoard() 
+    {
         System.out.println("---- BOARD ----");
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < rows; i++) 
+        {
+            for (int j = 0; j < cols; j++) 
+            {
                 GameCell cell = grid[j][i];
-                if (cell.isEmpty() || cell.getBlock() == null) {
+                if (cell.isEmpty() || cell.getBlock() == null) 
+                {
                     System.out.print("* ");
-                } else {
-                    try {
+                } 
+                else 
+                {
+                    try 
+                    {
                         System.out.print(cell.getBlock().getLetter() + " ");
-                    } catch (ArrayIndexOutOfBoundsException e) {
+                    } catch (ArrayIndexOutOfBoundsException e) 
+                    {
                         System.out.print("? ");
                         e.printStackTrace();
                     }
