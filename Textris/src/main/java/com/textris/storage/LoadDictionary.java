@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class LoadDictionary {
     private static String[] words = null;
     private static int listSize = 0;
-    private static boolean loaded = false; // ✅ Prevents multiple redundant loads
+    private static boolean loaded = false; // Prevents multiple redundant loads
 
     /**
      * Loads word list file Twordlist.txt into memory for the duration of the game.
