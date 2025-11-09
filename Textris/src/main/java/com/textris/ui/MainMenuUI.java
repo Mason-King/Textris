@@ -68,11 +68,13 @@ public class MainMenuUI extends Application {
 
         // Create menu buttons
         Button startButton = new Button("Start Game");
+        Button instructionsButton = new Button("Instructions");
         Button scoreboardButton = new Button("Scoreboard");
         Button exitButton = new Button("Exit");
 
         // Apply colors, hover effects, and drop shadows to buttons
         setButtonStyle(startButton, "#4CAF50"); // Green
+        setButtonStyle(instructionsButton, "#FFC107"); // orange
         setButtonStyle(scoreboardButton, "#2196F3"); // Blue
         setButtonStyle(exitButton, "#F44336"); // Red
 
@@ -88,11 +90,12 @@ public class MainMenuUI extends Application {
             gameLoop.start();
 
         });
+        instructionsButton.setOnAction(e -> showInstructionsPopup());
         scoreboardButton.setOnAction(e -> ScoreboardUI.show(primaryStage));
         exitButton.setOnAction(e -> stage.close());
 
         // Create layout and add nodes
-        VBox layout = new VBox(15, logoView, startButton, scoreboardButton, exitButton);
+        VBox layout = new VBox(15, logoView, startButton, instructionsButton, scoreboardButton, exitButton);
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: black;"); // Black background
 
@@ -144,6 +147,39 @@ public class MainMenuUI extends Application {
                         "-fx-font-size: 14pt;"
                 )
         );
+    }
+    
+    /**
+     * Displays a pop-up window with game instructions.
+     */
+    private void showInstructionsPopup() {
+        Stage popup = new Stage();
+        popup.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+        popup.setTitle("How to Play");
+
+        javafx.scene.text.Text instructionsText = new javafx.scene.text.Text(
+            "HOW TO PLAY:\n\n" +
+            "• Form words using falling letter blocks.\n" +
+            "• Use left/right arrow keys to move the blocks.\n" +
+            "• Words are cleared automatically once valid.\n" +
+            "• Each letter block cleared is worth 10 points.\n\n" +
+            "Try to keep the grid from filling up — the game ends when it does!"
+        );
+        instructionsText.setWrappingWidth(300);
+        instructionsText.setStyle("-fx-font-size: 14px; -fx-font-family: 'Arial';");
+        instructionsText.setFill(Color.WHITE);
+
+        Button closeButton = new Button("Close");
+        setButtonStyle(closeButton, "#F44336"); //Red
+        closeButton.setOnAction(e -> popup.close());
+
+        VBox popupLayout = new VBox(15, instructionsText, closeButton);
+        popupLayout.setAlignment(Pos.CENTER);
+        popupLayout.setStyle("-fx-background-color: black;");
+
+        Scene popupScene = new Scene(popupLayout, 350, 300);
+        popup.setScene(popupScene);
+        popup.showAndWait();
     }
 
     /**
