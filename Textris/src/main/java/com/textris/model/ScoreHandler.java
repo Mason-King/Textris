@@ -1,3 +1,5 @@
+package com.textris.model;
+
 /**
  * This class handles the user's score during an instance of the game.
  *
@@ -6,12 +8,7 @@
  * Collaborators:
  * - GameLoop
  * - 
- *
- * @author Cruz Shafer
  */
-
-package com.textris.model;
-
 public class ScoreHandler 
 {
     private int score;

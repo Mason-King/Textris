@@ -9,6 +9,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * This class uses JavaFX to define the graphics for a block.
+ *
+ * Responsibilities:
+ * - Creates a rectangle for the block
+ * - Creates text field to match the letter of the LetterBlock
+ *
+ * Collaborators:
+ * - GameWindow
+ *
+ */
 public class Block 
 {
     private Rectangle shape;

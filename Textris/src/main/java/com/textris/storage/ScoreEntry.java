@@ -2,13 +2,6 @@ package com.textris.storage;
 
 /**
  * Represents a single player's score entry in the game.
- * <p>
- * A {@code ScoreEntry} object stores the player's name and their corresponding
- * score value. Instances of this class are typically used by the
- * {@link com.textris.data.ScoreManager} to maintain and display high scores
- * in the scoreboard.
- * </p>
- *
  */
 public class ScoreEntry {
 

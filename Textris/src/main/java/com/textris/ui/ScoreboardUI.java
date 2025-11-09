@@ -18,30 +18,25 @@ import javafx.stage.Stage;
 import java.util.List;
 
 /**
- * The {@code ScoreboardUI} class defines the JavaFX user interface for displaying
+ * The ScoreboardUI class defines the JavaFX user interface for displaying
  * the top five highest scores in the game.
- * <p>
+ * 
  * This screen presents a table showing each player's name and score,
- * sorted in descending order (highest to lowest). The data is retrieved from
- * the {@link com.textris.data.ScoreManager}, which persists scores across sessions.
- * </p>
+ * sorted in descending order (highest to lowest).
  *
- * <h2>Features</h2>
- * <ul>
- *     <li>Displays the top 5 highest scores using a {@link TableView}</li>
- *     <li>Allows users to return to the main menu using a "Back" button</li>
- *     <li>Automatically updates score order when new entries are added</li>
- * </ul>
- *
+ * Features:
+ *     Displays the top 5 highest scores using a TableView
+ *     Allows users to return to the main menu using a "Back" button
+ *     Automatically updates score order when new entries are added
  */
 public class ScoreboardUI {
 
     /**
-     * Displays the scoreboard scene on the provided {@link Stage}.
-     * <p>
+     * Displays the scoreboard scene on the provided Stage.
+     * 
      * The scoreboard includes a table displaying
      * player names and scores in descending order.
-     * </p>
+     * 
      *
      * @param primaryStage the primary stage of the JavaFX application
      */
@@ -147,9 +142,9 @@ public class ScoreboardUI {
 
     /**
      * Applies background color, hover effect, and drop shadow to a button.
-     * <p>
+     * 
      * Hovering slightly lightens the color to provide feedback to the user.
-     * </p>
+     * 
      *
      * @param button the button to style
      * @param color  the base color in hexadecimal format (e.g., "#2196F3")

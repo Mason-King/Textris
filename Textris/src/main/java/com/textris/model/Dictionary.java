@@ -29,7 +29,8 @@ public class Dictionary {
             LoadDictionary.load();
         }
         catch(java.io.IOException e){
-            System.out.println("Dictionary failed to import.");
+            System.out.println("Dictionary failed to import:");
+            e.printStackTrace();
         }
     }
 

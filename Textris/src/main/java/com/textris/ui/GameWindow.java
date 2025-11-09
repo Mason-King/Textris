@@ -1,13 +1,3 @@
-/**
- * Handles the main in-game UI window.
- * 
- * Responsibilities:
- * -Displays the grid 
- * -displays falling blocks, overlays, and score.
- * 
- * @author Cruz Shafer, Mason King, Carrie Rochell
- */
-
 package com.textris.ui;
 
 import com.textris.model.LetterBlock;
@@ -24,7 +14,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import com.textris.media.Block;
 
-
+/**
+ * Handles the main in-game UI window.
+ * 
+ * Responsibilities:
+ * -Displays the grid 
+ * -displays falling blocks, overlays, and score.
+ * 
+ */
 public class GameWindow {
 
     /** The size of each cell/block in pixels. */
