@@ -73,7 +73,6 @@ public class GameLoop {
             board.move(current, Direction.DOWN);
         } else {
             setBlock();
-            dropBlock();
         }
     }
 
@@ -112,10 +111,15 @@ public class GameLoop {
      * Triggers word detection and gravity application.
      */
     public void setBlock() {
-        findWords();
         previous = current;
         current = null;
-        applyGravity();
+
+        boolean wordsFound = findWords();
+
+        if (!wordsFound) {
+            applyGravity();
+            dropBlock(); 
+        }
     }
 
     /**
@@ -129,17 +133,21 @@ public class GameLoop {
      * Detects any valid words formed by the most recently placed block.
      * Awards points and removes matched words from the board.
      */
-    public void findWords() {
-        if (previous == null) return;
+    public boolean findWords() {
+        if (previous == null) return false;
 
         GameCell cell = board.getCell(previous.getCol(), previous.getRow());
         List<GameBoard.WordMatch> matches = board.detectWords(cell);
 
+        if (matches.isEmpty()) return false;
+
         for (GameBoard.WordMatch match : matches) {
             System.out.println("Found word: " + match.word + " dir=" + match.dir);
             removeWord(match.word, match.startCell, match.dir);
-            addToScore(match.word.length()); // award 10 points per letter
+            addToScore(match.word.length());
         }
+
+        return true;
     }
 
     /**
@@ -202,7 +210,10 @@ public class GameLoop {
 
                 javafx.animation.PauseTransition unfreeze =
                         new javafx.animation.PauseTransition(javafx.util.Duration.millis(250));
-                unfreeze.setOnFinished(ev -> boardBusy = false);
+                unfreeze.setOnFinished(ev -> {
+                    boardBusy = false;
+                    dropBlock();   
+                });
                 unfreeze.play();
             });
 
