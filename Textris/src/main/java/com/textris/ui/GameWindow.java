@@ -60,7 +60,7 @@ public static void show(Stage primaryStage) {
     pane.getChildren().clear();
     scoreText.setText("Score: 0"); // Reset score display each time a new game starts
 
-    Line line = new Line(XMAX, 0, XMAX, YMAX);
+    Line line = new Line(XMAX+4, 0, XMAX+4, YMAX);
     line.setStroke(Color.WHITE);
     pane.getChildren().add(line);
 
