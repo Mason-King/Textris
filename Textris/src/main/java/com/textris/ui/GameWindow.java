@@ -1,6 +1,8 @@
 package com.textris.ui;
 
 import com.textris.model.LetterBlock;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,7 +14,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import com.textris.media.Block;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles the main in-game UI window.
@@ -56,31 +62,31 @@ public class GameWindow {
      *
      * @param primaryStage the primary JavaFX stage to display the scene on
      */
-public static void show(Stage primaryStage) {
-    pane.getChildren().clear();
-    scoreText.setText("Score: 0"); // Reset score display each time a new game starts
+    public static void show(Stage primaryStage) {
+        pane.getChildren().clear();
+        scoreText.setText("Score: 0"); // Reset score display each time a new game starts
 
-    Line line = new Line(XMAX+4, 0, XMAX+4, YMAX);
-    line.setStroke(Color.WHITE);
-    pane.getChildren().add(line);
+        Line line = new Line(XMAX+4, 0, XMAX+4, YMAX);
+        line.setStroke(Color.WHITE);
+        pane.getChildren().add(line);
 
-    // Score display setup
-    scoreText.setFont(Font.font("Arial", 24));
-    scoreText.setFill(Color.WHITE);
-    scoreText.setLayoutX(XMAX + 40);
-    scoreText.setLayoutY(60);
-    pane.getChildren().add(scoreText);
+        // Score display setup
+        scoreText.setFont(Font.font("Arial", 24));
+        scoreText.setFill(Color.WHITE);
+        scoreText.setLayoutX(XMAX + 40);
+        scoreText.setLayoutY(60);
+        pane.getChildren().add(scoreText);
 
-    overlay.setPickOnBounds(false);
-    overlay.setVisible(false);
+        overlay.setPickOnBounds(false);
+        overlay.setVisible(false);
 
-    StackPane root = new StackPane(pane, overlay);
-    scene = new Scene(root, XMAX + 180, YMAX);
-    pane.setStyle("-fx-background-color: black;");
-    primaryStage.setScene(scene);
-    primaryStage.setTitle("Textris - Game Window");
-    primaryStage.show();
-}
+        StackPane root = new StackPane(pane, overlay);
+        scene = new Scene(root, XMAX + 180, YMAX);
+        pane.setStyle("-fx-background-color: black;");
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Textris - Game Window");
+        primaryStage.show();
+    }
 
 
     /**
@@ -172,7 +178,6 @@ public static void show(Stage primaryStage) {
             gameOverText.setFont(Font.font("Arial", 48));
             gameOverText.setFill(Color.RED);
 
-            // --- Restart Button Setup ---
             Button restartButton = new Button("Restart");
             restartButton.setFont(Font.font("Arial", 24));
             restartButton.setStyle("""
@@ -209,7 +214,6 @@ public static void show(Stage primaryStage) {
                 }
             });
 
-            // --- Main Menu Button Setup ---
             Button mainMenuButton = new Button("Main Menu");
             mainMenuButton.setFont(Font.font("Arial", 24));
             mainMenuButton.setStyle("""
@@ -248,14 +252,57 @@ public static void show(Stage primaryStage) {
                 }
             });
 
-            // --- Layout ---
             VBox layout = new VBox(20, gameOverText, restartButton, mainMenuButton);
             layout.setStyle("-fx-alignment: center;");
             overlay.getChildren().add(layout);
         });
     }
+    
+    /** Returns the visual StackPane at a board position (or null). */
+    public static StackPane getNodeAt(int col, int row) {
+        double x = col * SIZE;
+        double y = row * SIZE;
+
+        for (var node : pane.getChildren()) {
+            if (node instanceof StackPane sp) {
+                if (Math.abs(sp.getLayoutX() - x) < 1 &&
+                    Math.abs(sp.getLayoutY() - y) < 1) {
+                    return sp;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Plays a fade-out animation for cleared blocks and calls onFinished when done.
+     *
+     * @param nodes list of StackPane block nodes to animate
+     * @param onFinished callback invoked when the animation completes
+     */
+    public static void playClearAnimation(List<StackPane> nodes, Runnable onFinished) {
+        Platform.runLater(() -> {
+            List<FadeTransition> fades = new ArrayList<>();
+
+            for (StackPane node : nodes) {
+                FadeTransition ft = new FadeTransition(Duration.millis(300), node);
+                ft.setFromValue(1.0);
+                ft.setToValue(0.0);
+                fades.add(ft);
+            }
+
+            ParallelTransition pt = new ParallelTransition();
+            pt.getChildren().addAll(fades);
+
+            pt.setOnFinished(e -> {
+                for (StackPane node : nodes) {
+                    pane.getChildren().remove(node);
+                }
+
+                if (onFinished != null) onFinished.run();
+            });
+
+            pt.play();
+        });
+    }
 }
-
-
-
-

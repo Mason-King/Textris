@@ -26,7 +26,9 @@ public class GameBoard
     private final int rows; // add 1 row for checking if game should end
     private final GameCell[][] grid;
     private InputHandler inputHandler;
-    private boolean isBoardBusy = false;
+
+    // renamed isBoardBusy -> boardBusy for consistency with GameLoop
+    private boolean boardBusy = false;
 
     /**
      * Creates an empty GameBoard by interconnecting GameCells.
@@ -46,7 +48,7 @@ public class GameBoard
      */
     public boolean isBoardBusy() 
     {
-        return isBoardBusy;
+        return boardBusy;
     }
 
     /**
@@ -54,28 +56,10 @@ public class GameBoard
      */
     public static class WordMatch 
     {
-        /**
-        * The found word.
-        */
         public final String word;
-
-        /**
-        * The starting cell's position.
-        */
         public final GameCell startCell;
-
-        /**
-        * The direction of the word.
-        */
         public final Direction dir;
 
-        /**
-         * Constructs a WordMatch record.
-         *
-         * @param word the matched word
-         * @param startCell the cell containing the first letter
-         * @param dir the direction of the word (horizontal or vertical)
-         */
         public WordMatch(String word, GameCell startCell, Direction dir) 
         {
             this.word = word;
@@ -190,43 +174,12 @@ public class GameBoard
         }
     }
 
-    /**
-     * Gets the total number of rows in the board.
-     *
-     * @return number of rows
-     */
-    public int getRowCount() 
-    {
-        return this.rows;
-    }
+    public int getRowCount() { return this.rows; }
+    public int getColCount() { return this.cols; }
+    public GameCell getCell(int x, int y) { return grid[x][y]; }
 
-    /**
-     * Gets the total number of columns in the board.
-     *
-     * @return number of columns
-     */
-    public int getColCount() 
-    {
-        return this.cols;
-    }
-
-    /**
-     * Returns the GameCell stored at a specific grid coordinate.
-     *
-     * @param x the column index
-     * @param y the row index
-     * @return the GameCell at that position
-     */
-    public GameCell getCell(int x, int y) 
-    {
-        return grid[x][y];
-    }
-    
     /**
      * Detects horizontal and vertical words (3–5 letters) formed around the given cell.
-     *
-     * @param startCell the most recently placed cell
-     * @return list of detected WordMatch objects
      */
     public List<WordMatch> detectWords(GameCell startCell) 
     {
@@ -300,9 +253,6 @@ public class GameBoard
 
     /**
      * Attempts to place a block in its designated starting cell.
-     *
-     * @param block the block to be placed
-     * @return true if the block was placed successfully, false otherwise
      */
     public boolean placeBlock(LetterBlock block) 
     {
@@ -329,7 +279,8 @@ public class GameBoard
      */
     public void applyGravity() 
     {
-        isBoardBusy = true;
+        boardBusy = true;
+
         for (int row = rows - 2; row >= 0; row--) 
         {
             for (int col = 0; col < cols; col++) 
@@ -345,22 +296,13 @@ public class GameBoard
                 }
             }
         }
-        isBoardBusy = false;
+
+        boardBusy = false;
     }
 
-    /**
-     * Links this GameBoard with the InputHandler for player input.
-     *
-     * @param inputHandler the InputHandler to associate
-     */
     public void setInputHandler(InputHandler inputHandler) 
-    {
-        this.inputHandler = inputHandler;
-    }
+    { this.inputHandler = inputHandler; }
 
-    /**
-     * Prints the current board state to the console for debugging.
-     */
     public void printBoard() 
     {
         System.out.println("---- BOARD ----");
