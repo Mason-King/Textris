@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * The ScoreboardUI class defines the JavaFX user interface for displaying
  * the top five highest scores in the game.
- * 
+ *
  * This screen presents a table showing each player's name and score,
  * sorted in descending order (highest to lowest).
  *
@@ -33,10 +33,10 @@ public class ScoreboardUI {
 
     /**
      * Displays the scoreboard scene on the provided Stage.
-     * 
+     *
      * The scoreboard includes a table displaying
      * player names and scores in descending order.
-     * 
+     *
      *
      * @param primaryStage the primary stage of the JavaFX application
      */
@@ -109,6 +109,7 @@ public class ScoreboardUI {
 
         // Load and display saved scores
         List<ScoreEntry> scores = ScoreManager.loadScores();
+        System.out.println(scores);
         table.getItems().addAll(scores);
 
         // -------------------------
@@ -128,6 +129,24 @@ public class ScoreboardUI {
             }
         });
 
+        nameCol.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setTextFill(Color.WHITE);   // <- makes name text white
+            }
+        });
+
+        scoreCol.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Number item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item.toString());
+                setTextFill(Color.WHITE);   // <- makes score text white
+            }
+        });
+
         root.setCenter(table);
 
         // -------------------------
@@ -142,9 +161,9 @@ public class ScoreboardUI {
 
     /**
      * Applies background color, hover effect, and drop shadow to a button.
-     * 
+     *
      * Hovering slightly lightens the color to provide feedback to the user.
-     * 
+     *
      *
      * @param button the button to style
      * @param color  the base color in hexadecimal format (e.g., "#2196F3")

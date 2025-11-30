@@ -1,11 +1,13 @@
 package com.textris.ui;
 
 import com.textris.model.LetterBlock;
+import com.textris.storage.ScoreManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
@@ -56,6 +58,9 @@ public class GameWindow {
 
     /** Text node displaying the player’s score. */
     private static Text scoreText = new Text("Score: 0");
+
+    /** Current score */
+    private static int score = 0;
 
     /**
      * Initializes and displays the main game window.
@@ -160,6 +165,7 @@ public class GameWindow {
      */
     public static void updateScore(int newScore) {
         Platform.runLater(() -> scoreText.setText("Score: " + newScore));
+        score = newScore;
     }
 
     /**
@@ -178,69 +184,118 @@ public class GameWindow {
             gameOverText.setFont(Font.font("Arial", 48));
             gameOverText.setFill(Color.RED);
 
+            TextField nameField = new TextField();
+            nameField.setPromptText("Enter your name");
+            nameField.setMaxWidth(260);
+            nameField.setStyle("""
+            -fx-font-size: 20;
+            -fx-background-radius: 12;
+            -fx-padding: 10;
+            """);
+
+            Button saveButton = new Button("Save Score");
+            saveButton.setFont(Font.font("Arial", 24));
+            saveButton.setStyle("""
+            -fx-background-color: #f1c40f;
+            -fx-text-fill: black;
+            -fx-font-weight: bold;
+            -fx-pref-width: 260;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
+            """);
+
+            saveButton.setOnMouseEntered(e -> saveButton.setStyle("""
+            -fx-background-color: #d4ac0d;
+            -fx-text-fill: black;
+            -fx-font-weight: bold;
+            -fx-pref-width: 260;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
+            """));
+
+            saveButton.setOnMouseExited(e -> saveButton.setStyle("""
+            -fx-background-color: #f1c40f;
+            -fx-text-fill: black;
+            -fx-font-weight: bold;
+            -fx-pref-width: 260;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
+            """));
+
+            saveButton.setOnAction(e -> {
+                String name = nameField.getText().trim();
+
+                if (!name.isEmpty()) {
+                    ScoreManager.addScore(name, score);
+                    saveButton.setText("Saved!");
+                    saveButton.setDisable(true);
+                    nameField.setDisable(true);
+                } else {
+                    nameField.setPromptText("Enter a name first!");
+                }
+            });
+
             Button restartButton = new Button("Restart");
             restartButton.setFont(Font.font("Arial", 24));
             restartButton.setStyle("""
-                -fx-background-color: #2ecc71;
-                -fx-text-fill: white;
-                -fx-font-weight: bold;
-                -fx-pref-width: 200;
-                -fx-pref-height: 60;
-                -fx-background-radius: 12;
+            -fx-background-color: #2ecc71;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-pref-width: 200;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
             """);
 
             restartButton.setOnMouseEntered(e -> restartButton.setStyle("""
-                -fx-background-color: #27ae60;
-                -fx-text-fill: white;
-                -fx-font-weight: bold;
-                -fx-pref-width: 200;
-                -fx-pref-height: 60;
-                -fx-background-radius: 12;
+            -fx-background-color: #27ae60;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-pref-width: 200;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
             """));
 
             restartButton.setOnMouseExited(e -> restartButton.setStyle("""
-                -fx-background-color: #2ecc71;
-                -fx-text-fill: white;
-                -fx-font-weight: bold;
-                -fx-pref-width: 200;
-                -fx-pref-height: 60;
-                -fx-background-radius: 12;
+            -fx-background-color: #2ecc71;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-pref-width: 200;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
             """));
 
             restartButton.setOnAction(e -> {
                 overlay.setVisible(false);
-                if (onRestart != null) {
-                    onRestart.run();
-                }
+                if (onRestart != null) onRestart.run();
             });
 
             Button mainMenuButton = new Button("Main Menu");
             mainMenuButton.setFont(Font.font("Arial", 24));
             mainMenuButton.setStyle("""
-                -fx-background-color: #3498db;
-                -fx-text-fill: white;
-                -fx-font-weight: bold;
-                -fx-pref-width: 260;
-                -fx-pref-height: 60;
-                -fx-background-radius: 12;
+            -fx-background-color: #3498db;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-pref-width: 260;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
             """);
 
             mainMenuButton.setOnMouseEntered(e -> mainMenuButton.setStyle("""
-                -fx-background-color: #2980b9;
-                -fx-text-fill: white;
-                -fx-font-weight: bold;
-                -fx-pref-width: 260;
-                -fx-pref-height: 60;
-                -fx-background-radius: 12;
+            -fx-background-color: #2980b9;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-pref-width: 260;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
             """));
 
             mainMenuButton.setOnMouseExited(e -> mainMenuButton.setStyle("""
-                -fx-background-color: #3498db;
-                -fx-text-fill: white;
-                -fx-font-weight: bold;
-                -fx-pref-width: 260;
-                -fx-pref-height: 60;
-                -fx-background-radius: 12;
+            -fx-background-color: #3498db;
+            -fx-text-fill: white;
+            -fx-font-weight: bold;
+            -fx-pref-width: 260;
+            -fx-pref-height: 60;
+            -fx-background-radius: 12;
             """));
 
             mainMenuButton.setOnAction(e -> {
@@ -252,9 +307,17 @@ public class GameWindow {
                 }
             });
 
-            VBox layout = new VBox(20, gameOverText, restartButton, mainMenuButton);
+            VBox layout = new VBox(20,
+                    gameOverText,
+                    nameField,
+                    saveButton,
+                    restartButton,
+                    mainMenuButton
+            );
+
             layout.setStyle("-fx-alignment: center;");
             overlay.getChildren().add(layout);
+
         });
     }
     
