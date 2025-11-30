@@ -77,6 +77,13 @@ public class ScoreboardUI {
         // -------------------------
         TableView<ScoreEntry> table = new TableView<>();
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN); // Columns fill table
+        
+        // Wrap the TableView in a VBox so we can control row heights
+        VBox tableContainer = new VBox(table);
+        tableContainer.setAlignment(Pos.CENTER);
+        tableContainer.setPadding(new Insets(10));
+        tableContainer.setSpacing(5);
+        
 
         // Drop shadow for table
         DropShadow tableShadow = new DropShadow();
@@ -111,11 +118,22 @@ public class ScoreboardUI {
         List<ScoreEntry> scores = ScoreManager.loadScores();
         System.out.println(scores);
         table.getItems().addAll(scores);
+        
+        // -------------------------
+        // Limit TableView height to show only up to 5 rows
+        // and match alternating row colors exactly
+        // -------------------------
+        int maxRows = 5;
+        
+        // FORCE table to always show exactly 5 rows
+        table.setFixedCellSize(40);  // adjust height as needed
 
-        // -------------------------
-        // Alternate Row Colors
-        // -------------------------
-        table.setRowFactory(tv -> new TableRow<>() {
+        // Set total table height = header + 5 rows
+        double headerHeight = 28;
+        table.setPrefHeight(headerHeight + table.getFixedCellSize() * maxRows);
+
+        table.setRowFactory(tv -> {
+            TableRow<ScoreEntry> row = new TableRow<>() {
             @Override
             protected void updateItem(ScoreEntry item, boolean empty) {
                 super.updateItem(item, empty);
@@ -127,7 +145,10 @@ public class ScoreboardUI {
                     setStyle("-fx-background-color: black;"); // Black
                 }
             }
-        });
+        };
+
+    return row;
+});
 
         nameCol.setCellFactory(col -> new TableCell<>() {
             @Override
@@ -147,7 +168,7 @@ public class ScoreboardUI {
             }
         });
 
-        root.setCenter(table);
+        root.setCenter(tableContainer);
 
         // -------------------------
         // Scene Setup
