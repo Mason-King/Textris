@@ -39,6 +39,9 @@ public class GameLoop {
     private InputHandler inputHandler;
     private boolean boardBusy = false;
     private boolean gameOn;
+    private final java.util.concurrent.atomic.AtomicInteger pendingClears =
+        new java.util.concurrent.atomic.AtomicInteger(0);
+
 
     /**
      * Constructs a GameLoop instance that controls game progression.
@@ -141,14 +144,17 @@ public class GameLoop {
 
         if (matches.isEmpty()) return false;
 
+        pendingClears.set(matches.size());
+
         for (GameBoard.WordMatch match : matches) {
-            System.out.println("Found word: " + match.word + " dir=" + match.dir);
+            System.out.println("Found word = " + match.word);
             removeWord(match.word, match.startCell, match.dir);
             addToScore(match.word.length());
         }
 
         return true;
     }
+
 
     /**
      * Removes a detected word from the board, clears associated blocks,
@@ -211,9 +217,15 @@ public class GameLoop {
                 javafx.animation.PauseTransition unfreeze =
                         new javafx.animation.PauseTransition(javafx.util.Duration.millis(250));
                 unfreeze.setOnFinished(ev -> {
-                    boardBusy = false;
-                    dropBlock();   
+                    int remaining = pendingClears.decrementAndGet();
+                    if (remaining <= 0) {
+                        boardBusy = false;
+                        dropBlock();
+                    } else {
+                        System.out.println("Remaining clears: " + remaining);
+                    }
                 });
+
                 unfreeze.play();
             });
 
