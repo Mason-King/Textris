@@ -16,8 +16,8 @@ public class Main {
     /**
     * The main function.
     * 
-    * @param args 
-    * @throws InterruptedException 
+    * @param args the args
+    * @throws InterruptedException the exception
     */
     public static void main(String[] args) throws InterruptedException{
         System.out.println("Launching textris game");
