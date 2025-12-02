@@ -198,15 +198,4 @@ public class MainMenuUI extends Application {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Launches the main menu as a standalone JavaFX application.
-     * 
-     * This method is a wrapper around {@link Application#launch(String...)}.
-     *
-     * @param args command-line arguments passed to the application
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

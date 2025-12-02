@@ -174,12 +174,47 @@ public class GameBoard
         }
     }
 
-    public int getRowCount() { return this.rows; }
-    public int getColCount() { return this.cols; }
-    public GameCell getCell(int x, int y) { return grid[x][y]; }
+    
+    /**
+     * Returns the number of rows in the board.
+     *
+     * @return the number of rows in the board
+     */
+    public int getRowCount() 
+    { 
+        return this.rows; 
+    }
+    
+    
+    /**
+     * Returns the number of columns in the board.
+     *
+     * @return the number of columns in the board
+     */
+    public int getColCount() 
+    { 
+        return this.cols; 
+    }
+    
+    
+    /**
+     * Returns the GameCell that exists at a certain point in the board.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return the GameCell that exists at x,y in the board
+     */
+    public GameCell getCell(int x, int y) 
+    { 
+        return grid[x][y]; 
+    }
 
+    
     /**
      * Detects horizontal and vertical words (3–5 letters) formed around the given cell.
+     * 
+     * @param startCell the GameCell to start the search from
+     * @return the list of valid words
      */
     public List<WordMatch> detectWords(GameCell startCell) 
     {
@@ -253,6 +288,9 @@ public class GameBoard
 
     /**
      * Attempts to place a block in its designated starting cell.
+     * 
+     * @param block the block to place
+     * @return true if the block was placed successfully
      */
     public boolean placeBlock(LetterBlock block) 
     {
@@ -300,9 +338,19 @@ public class GameBoard
         boardBusy = false;
     }
 
+    
+    /**
+     * Sets the board's active input handler.
+     *
+     * @param inputHandler the input handler
+     */
     public void setInputHandler(InputHandler inputHandler) 
     { this.inputHandler = inputHandler; }
 
+    
+    /**
+     * Prints the board to the console for debugging.
+     */
     public void printBoard() 
     {
         System.out.println("---- BOARD ----");
