@@ -135,6 +135,8 @@ public class GameLoop {
     /**
      * Detects any valid words formed by the most recently placed block.
      * Awards points and removes matched words from the board.
+     * 
+     * @return true if a word was found
      */
     public boolean findWords() {
         if (previous == null) return false;

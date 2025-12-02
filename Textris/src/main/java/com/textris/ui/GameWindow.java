@@ -321,7 +321,13 @@ public class GameWindow {
         });
     }
     
-    /** Returns the visual StackPane at a board position (or null). */
+    /** 
+     * Returns the visual StackPane at a board position (or null). 
+     * 
+     * @param col the column to return the StackPane for
+     * @param row the row to return the StackPane for
+     * @return the StackPane itself
+     */
     public static StackPane getNodeAt(int col, int row) {
         double x = col * SIZE;
         double y = row * SIZE;

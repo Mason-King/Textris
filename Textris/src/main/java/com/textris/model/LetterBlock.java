@@ -1,3 +1,9 @@
+package com.textris.model;
+
+import com.textris.media.Block;
+import com.textris.storage.LetterWeights;
+import java.util.Random;
+
 /**
  * This class represents a block containing a letter.
  *
@@ -7,13 +13,6 @@
  * Collaborators:
  * - LetterWeights
  */
-
-package com.textris.model;
-
-import com.textris.media.Block;
-import com.textris.storage.LetterWeights;
-import java.util.Random;
-
 public class LetterBlock 
 {
     private final char letter;

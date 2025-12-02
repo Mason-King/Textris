@@ -1,5 +1,8 @@
 package com.textris.model;
 
+import static com.textris.model.Direction.DOWN;
+import static com.textris.model.Direction.LEFT;
+import static com.textris.model.Direction.RIGHT;
 import java.util.List;
 import com.textris.ui.GameWindow;
 import com.textris.ui.InputHandler;
@@ -56,10 +59,29 @@ public class GameBoard
      */
     public static class WordMatch 
     {
+        /**
+        * The word itself.
+        */
         public final String word;
+        
+        /**
+        * The GameCell that the word starts in.
+        */
         public final GameCell startCell;
+        
+        /**
+        * The direction that the word goes in.
+        */
         public final Direction dir;
 
+    
+        /**
+        * Checks if a LetterBlock can move in a given direction.
+        *
+        * @param word the word
+        * @param startCell the cell that it starts in
+        * @param dir the direction of the word
+        */
         public WordMatch(String word, GameCell startCell, Direction dir) 
         {
             this.word = word;
