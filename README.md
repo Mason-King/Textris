@@ -11,4 +11,13 @@ TEXTRIS RUNNING STEPS:
     to find the JavaDocs.
 6 - Run the project using the green play button at the top.
 
+GAME STEPS:
+1 - Open the game.
+2 - Click on the "Instructions" button and read the pop-up.
+3 - Close the pop-up and click the "Start" button to begin the game.
+4 - Use the arrow keys to move the blocks around, attempting to make as many words as possible.
+5 - Once the game ends, input your name and click "Save Score".
+6 - Either restart to play again, or return to the Main Menu.
+7 - Once in the menu, click the "Scoreboard" button to see your previous scores.
+
 Done!
